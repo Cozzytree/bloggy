@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.text_shadow {
+  text-shadow: 2px 1px 20px rgba(0, 255, 0, 0.598);
+}
+
+.remove-scroll-edge::-webkit-scrollbar {
+  width: 1px;
+  height: 1px;
+}
+
+.spinner {
+  width: 3.5em;
+  height: 3.5em;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  border-left: transparent;
+  border-top: 2px solid transparent;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: rotate 500ms linear infinite;
+}
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+#root::-webkit-scrollbar {
+  width: 0.5px;
+}
+
+#root {
+  width: 100%;
+}
+
+.appear {
+  transform: scaleY(1);
+  transform-origin: top;
+  animation: appear 0.3s ease-in-out;
+}
+@keyframes appear {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.disappear {
+  transition: ease-in;
+  animation: disappear 0.3s ease;
+  display: none;
+}

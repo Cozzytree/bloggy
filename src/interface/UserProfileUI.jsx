@@ -1,4 +1,5 @@
-import defaultProfile from "../../public/defaultProfile.jpg";
+import { IoAddOutline } from "react-icons/io5";
+import Button from "./Button";
 
 const liStyle =
   "text-center cursor-pointer md:hover:bg-lime-300/10 transition-all duration-100 rounded-md px-5 py-1 font-NovaSquare font-medium text-sm";
@@ -7,11 +8,18 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
   return (
     <>
       <div className="min-h-[10em] w-[100%] flex items-end mt-5 space-x-10">
-        <img
-          src={username?.image ? username?.image : defaultProfile}
-          alt="profile"
-          className="md:w-[15em] w-[10em] h-[10em] md:h-[14em] aspect-auto rounded-2xl"
-        />
+        {username?.image ? (
+          <img
+            src={username?.image}
+            alt="profile"
+            className={`${
+              !username?.image && "defaultProfile"
+            } md:w-[15em] w-[10em] h-[10em] md:h-[14em] aspect-auto rounded-2xl`}
+          />
+        ) : (
+          <Button className="defaultProfile md:w-[15em] w-[10em] h-[10em] md:h-[14em] aspect-auto rounded-2xl"></Button>
+        )}
+
         <h1 className="mb-5 text-zinc-50 text-xl font-bold font-NovaSquare">
           {username?.profiles.username}
         </h1>

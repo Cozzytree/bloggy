@@ -54,7 +54,7 @@ function Form({ type, buttonLabel, formFor, setIsLogin }) {
 
   return (
     <>
-      {loadingLogin || (loadingSignUp && <Spinner />)}
+      {(loadingLogin || loadingSignUp) && <Spinner />}
       <form
         onSubmit={(e) => {
           if (formFor === "login") {

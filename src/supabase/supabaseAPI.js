@@ -1,5 +1,6 @@
 import { redirect } from "react-router-dom";
 import supabase, { supabaseUrl } from "./supabase";
+import { data } from "autoprefixer";
 
 //* SIGN UP WITH EMAIL AND PASSWORD
 export async function SignUpWithEmailandPass(email, password) {
@@ -67,10 +68,20 @@ export async function loadUserDetails() {
     .select("*, profiles(username)")
     .eq("user_id", userInfo.id);
 
-  // let { data: likes } = await supabase.from("likes").sle;
+  const postIDs = posts.map((id) => id.id);
+
+  const { data: likes } = await supabase
+    .from("likes")
+    .select("*")
+    .in("post_id", postIDs);
+
+  const postsAndLikes = posts.map((post) => {
+    const postLikes = likes.filter((like) => like.post_id === post.id);
+    return { ...post, likes: postLikes };
+  });
 
   if (error) throw new Error(error.message);
-  return { posts };
+  return postsAndLikes;
 }
 
 //* DELETE POSTS
@@ -83,10 +94,39 @@ export async function deletePosts(id) {
 export async function getAllPosts({ pageParam = 0 }) {
   const start = pageParam * 10;
   const end = pageParam * 10 + 10;
+  const activeUser = JSON.parse(
+    localStorage.getItem("sb-vozbqbvaultodqeuimqv-auth-token")
+  );
+  const activeUserId = activeUser.user.id;
   const { data: posts, error } = await supabase
     .from("posts")
     .select("*, profiles(username)")
+    .neq("user_id", activeUserId)
     .range(start, end);
+
+  const postIDs = posts.map((id) => id.id);
+
+  const { data: likes } = await supabase
+    .from("likes")
+    .select("*")
+    .in("post_id", postIDs);
+
+  const postsAndLikes = posts.map((post) => {
+    const postLikes = likes.filter((like) => like.post_id === post.id);
+    return { ...post, likes: postLikes };
+  });
+
   if (error) throw new Error(error.message);
-  return posts;
+  return postsAndLikes;
+}
+
+//* LIKE POST
+export async function likePost(postId, userId) {
+  console.log(postId, userId);
+  const { data: likes, error } = await supabase
+    .from("likes")
+    .insert({ post_id: postId, user_id: userId })
+    .select();
+  if (error) console.log(error);
+  return likes;
 }

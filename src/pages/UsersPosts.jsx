@@ -6,14 +6,13 @@ import { PostsItem } from "../interface/Posts";
 
 function UsersPosts() {
   const { loadingPosts, allPosts, postsError } = useAllposts();
-
   return (
     <>
       <Logo />
       {loadingPosts && <Spinner />}
       <ul className="list-none space-y-4">
         {allPosts?.map((post) => (
-          <PostsItem key={post.id} posts={post} />
+          <PostsItem key={post.id} posts={post} likes={allPosts.likes} />
         ))}
       </ul>
       <Navigation />

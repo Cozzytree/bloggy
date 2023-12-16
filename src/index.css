@@ -60,3 +60,7 @@
   animation: disappear 0.3s ease;
   display: none;
 }
+.defaultProfile {
+  background-image: url("../public/defaultProfile.jpg");
+  background-size: cover;
+}

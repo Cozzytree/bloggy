@@ -34,7 +34,7 @@ function User() {
 
   useEffect(() => {
     if (users) {
-      searchParams.set("", users?.posts[0]?.profiles.username);
+      searchParams.set("", users?.[0]?.profiles.username);
       setSearcParams(searchParams);
     }
   }, [users, setSearcParams, searchParams]);
@@ -62,9 +62,10 @@ function User() {
     addPosts({ formData });
     setUserPost("");
   }
-
+  if (loadingUsers) return <Spinner />;
   return (
     <>
+      {/* {"modal for log out"} */}
       <Modal>
         <Modal.Open opens="openModal">
           <Button className=" absolute top-4 right-4">
@@ -83,7 +84,7 @@ function User() {
       <UserProfileUI
         isPosts={isPosts}
         setIsPosts={setIsPosts}
-        username={users?.posts[0]}
+        username={users?.[0]}
       />
 
       <Button
@@ -93,8 +94,9 @@ function User() {
         <IoAddOutline size={50} />
       </Button>
 
-      {(loadingUsers || isLoadingAddPosts) && <Spinner />}
+      {isLoadingAddPosts && <Spinner />}
 
+      {/* {"Form for adding posts"} */}
       <form
         action=""
         className={`${
@@ -117,7 +119,9 @@ function User() {
           accept="image/*"
           onChange={(e) => setImageFile(e.target.files[0])}
         />
-        <Button type="small">Add Post</Button>
+        <Button disabled={isLoadingAddPosts} type="small">
+          Add Post
+        </Button>
       </form>
 
       {isPosts ? (

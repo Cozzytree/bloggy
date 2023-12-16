@@ -6,21 +6,27 @@ import Column from "./Column";
 import { useDeletePost } from "../hooks/Users/useDeletePosts";
 import Spinner from "./Spinner";
 import Likes from "./Likes";
+import { useCurrentUser } from "../hooks/Users/useCurrentUser";
+import { useLikePost } from "../hooks/Users/useLikePost";
 
 function Posts({ data, render }) {
   return (
     <ul className="flex flex-col gap-4 md:w-[55vw] w-[90vw] px-5 pb-[8em] list-none">
-      {data?.posts?.map(render)}
+      {data?.map(render)}
     </ul>
   );
 }
 
-export function PostsItem({ posts, type }) {
+export function PostsItem({ posts, type, likes }) {
+  const currentUser = useCurrentUser();
   const { content, created_at, image, profiles } = posts;
   const { deletePost, isDeleting } = useDeletePost();
+  const { addLike } = useLikePost();
   const [isOptions, setIsOprions] = useState(false);
 
-  if (isDeleting) <Spinner />;
+  function handleAddLike() {
+    addLike({ postId: posts.id, userId: currentUser });
+  }
 
   return (
     <li
@@ -69,7 +75,16 @@ export function PostsItem({ posts, type }) {
         />
       )}
       <p className="text-sm py-5 w-[60%]">{content}</p>
-      <Likes />
+
+      <Likes
+        addLike={handleAddLike}
+        liked={
+          posts?.likes.filter((like) => like.user_id === currentUser).length
+            ? true
+            : false
+        }
+        length={posts.likes.length}
+      />
     </li>
   );
 }

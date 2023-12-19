@@ -4,18 +4,23 @@ import toast from "react-hot-toast";
 
 export function useLikePost() {
   const queryClient = useQueryClient();
-
-  const { mutate: addLike, error } = useMutation({
+  const {
+    mutate: addLike,
+    error,
+    isPending: isLiking,
+  } = useMutation({
     mutationFn: ({ postId, userId }) => likePost(postId, userId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["users"],
       });
-      toast.success("liked");
+      queryClient.invalidateQueries({
+        queryKey: ["allPosts"],
+      });
     },
     onError: () => {
       toast.error(error.message);
     },
   });
-  return { addLike };
+  return { addLike, isLiking };
 }

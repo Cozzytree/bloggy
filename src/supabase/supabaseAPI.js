@@ -1,6 +1,5 @@
 import { redirect } from "react-router-dom";
 import supabase, { supabaseUrl } from "./supabase";
-import { data } from "autoprefixer";
 
 //* SIGN UP WITH EMAIL AND PASSWORD
 export async function SignUpWithEmailandPass(email, password) {
@@ -65,7 +64,7 @@ export async function loadUserDetails() {
 
   let { data: posts, error } = await supabase
     .from("posts")
-    .select("*, profiles(username)")
+    .select("*, profiles(username, avatar_url)")
     .eq("user_id", userInfo.id);
 
   const postIDs = posts.map((id) => id.id);
@@ -122,11 +121,65 @@ export async function getAllPosts({ pageParam = 0 }) {
 
 //* LIKE POST
 export async function likePost(postId, userId) {
-  console.log(postId, userId);
   const { data: likes, error } = await supabase
     .from("likes")
     .insert({ post_id: postId, user_id: userId })
     .select();
   if (error) console.log(error);
   return likes;
+}
+
+//* UNLIKE POST
+export async function unlikePost(id, user_id) {
+  const { error } = await supabase
+    .from("likes")
+    .delete()
+    .eq("post_id", id)
+    .eq("user_id", user_id);
+  if (error) console.error(error.message);
+}
+
+//*UPDATE PROFILE PICTURE
+export async function updateAvatar(newImage, id) {
+  console.log(id, newImage);
+  const image = newImage.name.replaceAll("-", "_");
+  const imagePath = `${supabaseUrl}/storage/v1/object/public/avatars/${image}`;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ avatar_url: imagePath })
+    .eq("id", id)
+    .single();
+  console.log(data);
+  if (error) return;
+
+  const { data: photo, error: uploadError } = await supabase.storage
+    .from("avatars")
+    .upload(image, newImage, {
+      cacheControl: "3600",
+      upsert: false,
+    });
+  console.log(photo, uploadError, data);
+  return data;
+}
+
+//*FETCHfOREIGH USER
+export async function foreignUser(user_id) {
+  const { data: post, error } = await supabase
+    .from("posts")
+    .select("*, profiles(username)")
+    .eq("user_id", user_id);
+
+  const postID = post?.map((ids) => ids.id);
+
+  const { data: likes } = await supabase
+    .from("likes")
+    .select("*")
+    .in("post_id", postID);
+
+  const foreignUserDetails = post.map((post) => {
+    const postLikes = likes.filter((like) => like.post_id === post.id);
+    return { ...post, likes: postLikes };
+  });
+  return foreignUserDetails;
 }

@@ -38,21 +38,19 @@ function Navigation() {
     <ul
       className={`fixed bottom-0 bg-zinc-800/90 w-[100%] flex justify-center space-x-20 px-5 py-5 transition-all duration-150 h-[4em]`}
     >
-      <NavLink to="/home">
-        <button>
-          <IoIosHome size={20} fill="lime" />
-        </button>
-      </NavLink>
       <li>
-        <button>
+        <NavLink to="/home">
+          <IoIosHome size={20} fill="lime" />
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/search">
           <FaSearch size={20} fill="lime" />
-        </button>
+        </NavLink>
       </li>
       <li>
         <NavLink to="/user">
-          <button>
-            <BsFillPersonFill size={20} fill="lime" />
-          </button>
+          <BsFillPersonFill size={20} fill="lime" />
         </NavLink>
       </li>
     </ul>

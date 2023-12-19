@@ -1,23 +1,52 @@
-import { IoAddOutline } from "react-icons/io5";
+import { useState } from "react";
+import { useUpdateProfileImage } from "../hooks/Users/useUpdateProfileImage";
 import Button from "./Button";
 
 const liStyle =
   "text-center cursor-pointer md:hover:bg-lime-300/10 transition-all duration-100 rounded-md px-5 py-1 font-NovaSquare font-medium text-sm";
 
 function UserProfileUI({ isPosts, setIsPosts, username }) {
+  const [file, setFile] = useState("");
+  const [isAdd, setIsAadd] = useState(false);
+  const { changeImage } = useUpdateProfileImage();
+
+  function handleChangeProffileImage(file) {
+    console.log(file);
+    changeImage(file);
+  }
+  // console.log(username?.profiles.avatar_url);
+
   return (
     <>
       <div className="min-h-[10em] w-[100%] flex items-end mt-5 space-x-10">
-        {username?.image ? (
+        {username?.profiles.avatar_url ? (
           <img
-            src={username?.image}
+            src={username?.profiles.avatar_url}
             alt="profile"
-            className={`${
-              !username?.image && "defaultProfile"
-            } md:w-[15em] w-[10em] h-[10em] md:h-[14em] aspect-auto rounded-2xl`}
+            className={`md:w-[15em] w-[10em] h-[10em] md:h-[14em] aspect-auto rounded-2xl`}
           />
         ) : (
-          <Button className="defaultProfile md:w-[15em] w-[10em] h-[10em] md:h-[14em] aspect-auto rounded-2xl"></Button>
+          <div className="flex flex-col justify-between items-center relative">
+            <input
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+                setIsAadd((current) => !current);
+              }}
+              defaultValue={""}
+              type="file"
+              accept="image/*"
+              className="bg-zinc-900 text-zinc-90 opacity-80 defaultProfile cursor-pointer"
+            />
+            {(isAdd || file) && (
+              <Button
+                type="small"
+                className="absolute top-[50%]"
+                onClick={() => handleChangeProffileImage(file)}
+              >
+                Add
+              </Button>
+            )}
+          </div>
         )}
 
         <h1 className="mb-5 text-zinc-50 text-xl font-bold font-NovaSquare">

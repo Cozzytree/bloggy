@@ -35,8 +35,9 @@ function Button({ type, children, onClick, className, disabled, onMouseDown }) {
   if (type === "like") {
     return (
       <button
+        disabled={disabled}
         onMouseDown={onMouseDown}
-        className={`${className}`}
+        className={`${className} z-0`}
         onClick={onClick}
       >
         {children}

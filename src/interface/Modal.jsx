@@ -2,12 +2,12 @@ import {
   cloneElement,
   createContext,
   useContext,
-  useEffect,
   useRef,
   useState,
 } from "react";
 import { createPortal } from "react-dom";
 import Button from "./Button";
+import { useClickOutside } from "../hooks/uiHooks/useClickOutside";
 
 const ModalContet = createContext();
 
@@ -33,19 +33,7 @@ function ModalWindow({ children, name }) {
   const { close, isOpen } = useContext(ModalContet);
   const ref = useRef();
 
-  useEffect(
-    function () {
-      function closeModal(e) {
-        if (ref.current && !ref.current.contains(e.target)) {
-          close();
-        }
-      }
-      document.addEventListener("click", closeModal, true);
-
-      return () => document.removeEventListener("click", closeModal, true);
-    },
-    [ref, close]
-  );
+  useClickOutside(ref, close);
 
   if (isOpen !== name) return null;
 

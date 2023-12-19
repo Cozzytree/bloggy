@@ -1,13 +1,17 @@
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "./Button";
 import Column from "./Column";
 import { useDeletePost } from "../hooks/Users/useDeletePosts";
-import Spinner from "./Spinner";
+// import Spinner from "./Spinner";
 import Likes from "./Likes";
 import { useCurrentUser } from "../hooks/Users/useCurrentUser";
 import { useLikePost } from "../hooks/Users/useLikePost";
+import { useUnlikePost } from "../hooks/Users/UseUnlikePost";
+import Modal from "./Modal";
+import AreYouSureWindow from "./AreYouSureWindow";
+import { useClickOutside } from "../hooks/uiHooks/useClickOutside";
 
 function Posts({ data, render }) {
   return (
@@ -17,16 +21,28 @@ function Posts({ data, render }) {
   );
 }
 
-export function PostsItem({ posts, type, likes }) {
+export function PostsItem({ posts, type }) {
+  const [isOptions, setIsOptions] = useState(false);
+  const [isLoadedImage, setIsLoadedImage] = useState(false);
   const currentUser = useCurrentUser();
   const { content, created_at, image, profiles } = posts;
   const { deletePost, isDeleting } = useDeletePost();
-  const { addLike } = useLikePost();
-  const [isOptions, setIsOprions] = useState(false);
+  const { addLike, isLiking } = useLikePost();
+  const { removeLike, isUnliking } = useUnlikePost();
+  const ref = useRef();
 
   function handleAddLike() {
     addLike({ postId: posts.id, userId: currentUser });
   }
+  function handleRemoveLike() {
+    removeLike({ id: posts.id, user_id: currentUser });
+  }
+
+  function handleLoadedImage() {
+    setIsLoadedImage(true);
+  }
+
+  useClickOutside(ref, () => setIsOptions(false));
 
   return (
     <li
@@ -37,7 +53,7 @@ export function PostsItem({ posts, type, likes }) {
       <div className="flex justify-between">
         <div className="flex flex-col">
           <h1 className="text-md text-lime-100 text-md font-medium">
-            {profiles.username}
+            {profiles?.username}
           </h1>
           <span className="text-[0.70em] text-zinc-400">
             {Intl.DateTimeFormat("en", {
@@ -47,18 +63,29 @@ export function PostsItem({ posts, type, likes }) {
           </span>
         </div>
         {type === "ownAccount" && (
-          <div className="relative">
-            <Button onClick={() => setIsOprions((current) => !current)}>
+          <div className="relative" ref={ref}>
+            <Button onClick={() => setIsOptions((current) => !current)}>
               <HiOutlineDotsHorizontal />
             </Button>
             {isOptions && (
               <Column className="absolute right-4 top-1">
-                <Button
-                  disabled={isDeleting}
-                  onClick={() => deletePost(posts.id)}
-                >
-                  delete
-                </Button>
+                <Modal>
+                  <Modal.Open opens="openModal">
+                    <Button>Delete</Button>
+                  </Modal.Open>
+                  <Modal.ModalWindow name="openModal">
+                    <AreYouSureWindow label="Are you sure you want to delete the post?">
+                      <Button
+                        type="danger"
+                        disabled={isDeleting}
+                        onClick={() => deletePost(posts.id)}
+                      >
+                        delete
+                      </Button>
+                    </AreYouSureWindow>
+                  </Modal.ModalWindow>
+                </Modal>
+
                 <Button>Edit</Button>
               </Column>
             )}
@@ -68,15 +95,23 @@ export function PostsItem({ posts, type, likes }) {
 
       {/* // * image  */}
       {posts.image && (
-        <img
-          src={image}
-          alt=""
-          className="w-auto h-[20em] aspect-auto rounded-lg"
-        />
+        <div className="min-w-[30em] relative min-h-[20em]">
+          {!isLoadedImage ? (
+            <div className="image-loader h-[20em]"></div>
+          ) : (
+            <img
+              src={image}
+              alt=""
+              className="w-auto h-[20em] aspect-auto rounded-lg"
+              onLoad={handleLoadedImage}
+            />
+          )}
+        </div>
       )}
       <p className="text-sm py-5 w-[60%]">{content}</p>
-
       <Likes
+        isProcessing={{ isLiking, isUnliking }}
+        removeLike={() => handleRemoveLike()}
         addLike={handleAddLike}
         liked={
           posts?.likes.filter((like) => like.user_id === currentUser).length

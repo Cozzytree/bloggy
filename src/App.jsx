@@ -10,6 +10,8 @@ import Homepage from "./pages/Homepage";
 import UsersPosts from "./pages/UsersPosts";
 import SendRecovery from "./interface/SendRecovery";
 import ResetPassword from "./pages/ResetPassword";
+import Search from "./pages/Search";
+import ForeighUser from "./pages/ForeighUser";
 
 const queryclient = new QueryClient({
   defaultOptions: {
@@ -36,6 +38,10 @@ function App() {
             <Route path="password_recovery" element={<SendRecovery />} />
 
             <Route path="reset_password" element={<ResetPassword />} />
+
+            <Route path="search" element={<Search />} />
+
+            <Route path="search/:userId" element={<ForeighUser />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -14,7 +14,7 @@ import Button from "../interface/Button";
 import UserProfileUI from "../interface/UserProfileUI";
 // import { useDeletePost } from "../hooks/Users/useDeletePosts";
 import Modal from "../interface/Modal";
-import LogoutWindow from "../interface/LogoutWindow";
+import AreYouSureWindow from "../interface/AreYouSureWindow";
 import Navigation from "../interface/Navigation";
 const queryCache = new QueryCache();
 
@@ -55,29 +55,33 @@ function User() {
 
   function handleAddForm(e) {
     e.preventDefault();
-    if (!userPost) return;
+    if (!userPost && !imageFile) return;
 
     // console.log({ userPost, imageFile });
     const formData = { userPost, imageFile };
     addPosts({ formData });
     setUserPost("");
+    setAddForm(false);
   }
+
   if (loadingUsers) return <Spinner />;
+
   return (
     <>
       {/* {"modal for log out"} */}
       <Modal>
         <Modal.Open opens="openModal">
-          <Button className=" absolute top-4 right-4">
+          <Button className="absolute top-4 right-4">
             <FaPowerOff fill="white" />
           </Button>
         </Modal.Open>
+
         <Modal.ModalWindow name="openModal">
-          <LogoutWindow>
+          <AreYouSureWindow label="Are you sure tou want to logout?">
             <Button onClick={userLogout} type="danger">
               Log out
             </Button>
-          </LogoutWindow>
+          </AreYouSureWindow>
         </Modal.ModalWindow>
       </Modal>
 
@@ -117,6 +121,7 @@ function User() {
           className={inputStyle}
           type="file"
           accept="image/*"
+          defaultValue=""
           onChange={(e) => setImageFile(e.target.files[0])}
         />
         <Button disabled={isLoadingAddPosts} type="small">

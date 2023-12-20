@@ -15,15 +15,17 @@ function Likes({ length, liked, addLike, removeLike, isProcessing }) {
           onClick={liked ? removeLike : addLike}
           type="like"
           className={`${
-            liked ? "bg-lime-400 text-zinc-900 font-black" : null
-          } flex items-center justify-center gap-1 text-[0.8em] px-4 py-1 border-[1px] border-lime-500 rounded-md w-[5em] transition-all duration-150 h-[3em] relative`}
+            liked ? "border-lime-500 text-zinc-900 font-black" : null
+          } flex items-center justify-center gap-1 text-[0.8em] px-4 py-1 border-[1px] rounded-md w-[5em] transition-all duration-150 h-[3em] relative border-zinc-700/50`}
         >
           {((isLiking || isUnliking) && (
             <div className="like-spinner">
               <AiOutlineLoading3Quarters size={20} />
             </div>
           )) ||
-            (liked && <AiFillLike size={15} />) || <AiOutlineLike size={15} />}
+            (liked && <AiFillLike size={15} fill="lime" />) || (
+              <AiOutlineLike size={15} />
+            )}
         </Button>
 
         <span>

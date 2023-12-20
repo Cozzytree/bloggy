@@ -10,21 +10,16 @@ function ImageGallery({ data, render }) {
 
 export function ImageItem({ data }) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  function handleLoadedImage() {
-    setIsImageLoaded(true);
-  }
+
   return (
-    <div className="relative min-h-[10em] border-[1px] border-zinc-100/40 rounded-md">
-      {!isImageLoaded ? (
-        <div className="image-loader"></div>
-      ) : (
-        <img
-          className={`rounded-xl aspect-auto`}
-          src={data.image}
-          alt=""
-          onLoad={handleLoadedImage}
-        />
-      )}
+    <div className="relative h-auto">
+      {!isImageLoaded && <div className="image-loader"></div>}
+      <img
+        className={`rounded-xl min-h-[15em] aspect-auto`}
+        src={data.image}
+        alt=""
+        onLoad={() => setIsImageLoaded(true)}
+      />
     </div>
   );
 }

@@ -41,7 +41,7 @@ function ModalWindow({ children, name }) {
     <div className="inset-0 bg-zinc-800/20 backdrop-blur-sm fixed flex justify-center items-center">
       <div
         ref={ref}
-        className="text-zinc-50 bg-zinc-300 flex justify-center items-center rounded-lg relative"
+        className="text-zinc-50 bg-zinc-100/50 flex justify-center items-center rounded-lg relative"
       >
         <Button
           className="text-zinc-900 absolute right-4 top-1 font-bold text-lg"

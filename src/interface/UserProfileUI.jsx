@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useUpdateProfileImage } from "../hooks/Users/useUpdateProfileImage";
+import { MdOutlineEdit } from "react-icons/md";
+import { FaCheck } from "react-icons/fa6";
+import { useChangeUsername } from "../hooks/Users/useChangeUsername";
 import Button from "./Button";
+import Spinner from "./Spinner";
 
 const liStyle =
   "text-center cursor-pointer md:hover:bg-lime-300/10 transition-all duration-100 rounded-md px-5 py-1 font-NovaSquare font-medium text-sm";
@@ -8,16 +12,29 @@ const liStyle =
 function UserProfileUI({ isPosts, setIsPosts, username }) {
   const [file, setFile] = useState("");
   const [isAdd, setIsAadd] = useState(false);
+  const [isEditName, setIsEditName] = useState(false);
+  const [newUserName, setNewUserName] = useState(
+    username?.profiles.username || ""
+  );
+  const { newName, error, isPending } = useChangeUsername();
   const { changeImage } = useUpdateProfileImage();
 
   function handleChangeProffileImage(file) {
     console.log(file);
     changeImage(file);
   }
-  // console.log(username?.profiles.avatar_url);
+
+  function handleNewName() {
+    const oldName = username?.profiles.username;
+    const newUser = newUserName;
+    if (oldName !== newUser) {
+      newName(newUser);
+    }
+  }
 
   return (
     <>
+      {isPending && <Spinner />}
       <div className="min-h-[10em] w-[100%] flex items-end mt-5 space-x-10">
         {username?.profiles.avatar_url ? (
           <img
@@ -48,10 +65,42 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
             )}
           </div>
         )}
+        <div className="flex gap-4 relative justify-between">
+          {isEditName ? (
+            <input
+              className="text-zinc-100 bg-transparent text-xl py-1 px-1 focus:outline-none font-NovaSquare font-semibold border-[0.5px] border-zinc-700 rounded-md"
+              type="text"
+              value={newUserName}
+              onChange={(e) => setNewUserName(e.target.value)}
+              autoFocus
+            />
+          ) : (
+            <h1 className="mb-5 text-zinc-50 text-xl font-bold font-NovaSquare">
+              {username?.profiles.username}
+            </h1>
+          )}
 
-        <h1 className="mb-5 text-zinc-50 text-xl font-bold font-NovaSquare">
-          {username?.profiles.username}
-        </h1>
+          {}
+          <span className="flex gap-5">
+            <MdOutlineEdit
+              onClick={() => setIsEditName((current) => !current)}
+              fill="silver"
+              cursor="pointer"
+              size={18}
+            />
+            {isEditName && (
+              <FaCheck
+                onClick={() => {
+                  handleNewName();
+                  setIsEditName((current) => !current);
+                }}
+                fill="green"
+                size={20}
+                cursor="pointer"
+              />
+            )}
+          </span>
+        </div>
       </div>
 
       <div className="w-[100%] text-zinc-50 h-8 flex justify-start mt-5 border-b-[2px] border-b-lime-300/20">

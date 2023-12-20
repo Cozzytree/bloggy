@@ -1,17 +1,20 @@
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { FaRegCommentAlt } from "react-icons/fa";
 
 import { useRef, useState } from "react";
 import Button from "./Button";
 import Column from "./Column";
-import { useDeletePost } from "../hooks/Users/useDeletePosts";
 // import Spinner from "./Spinner";
+import Modal from "./Modal";
 import Likes from "./Likes";
+import Comment from "./Comment";
+import { useDeletePost } from "../hooks/Users/useDeletePosts";
 import { useCurrentUser } from "../hooks/Users/useCurrentUser";
 import { useLikePost } from "../hooks/Users/useLikePost";
 import { useUnlikePost } from "../hooks/Users/UseUnlikePost";
-import Modal from "./Modal";
 import AreYouSureWindow from "./AreYouSureWindow";
 import { useClickOutside } from "../hooks/uiHooks/useClickOutside";
+import { useComments } from "../hooks/Users/useComments";
 
 function Posts({ data, render }) {
   return (
@@ -29,6 +32,7 @@ export function PostsItem({ posts, type }) {
   const { deletePost, isDeleting } = useDeletePost();
   const { addLike, isLiking } = useLikePost();
   const { removeLike, isUnliking } = useUnlikePost();
+  const { fetchComments } = useComments();
   const ref = useRef();
 
   function handleAddLike() {
@@ -48,7 +52,7 @@ export function PostsItem({ posts, type }) {
     <li
       className={`${
         posts.image ? "grid grid-rows-[1fr_auto_auto]" : ""
-      } text-lime-100 font-NovaSquare space-y-5 bg-zinc-700/10 border-[0.5px] border-zinc-500/25 py-2 px-5 rounded-md w-[100%] shadow-md shadow-zinc-900 whitespace-pre-wrap overflow-scroll remove-scroll-edge`}
+      } list-none text-lime-100 font-NovaSquare space-y-5 bg-zinc-700/10 border-[0.5px] border-zinc-500/25 py-2 px-5 rounded-md w-[100%] shadow-md shadow-zinc-900 whitespace-pre-wrap overflow-scroll remove-scroll-edge`}
     >
       <div className="flex justify-between">
         <div className="flex flex-col">
@@ -96,30 +100,44 @@ export function PostsItem({ posts, type }) {
       {/* // * image  */}
       {posts.image && (
         <div className="min-w-[30em] relative min-h-[20em]">
-          {!isLoadedImage ? (
-            <div className="image-loader h-[20em]"></div>
-          ) : (
-            <img
-              src={image}
-              alt=""
-              className="w-auto h-[20em] aspect-auto rounded-lg"
-              onLoad={handleLoadedImage}
-            />
-          )}
+          {!isLoadedImage && <div className="image-loader h-[20em]"></div>}
+          <img
+            src={image}
+            alt=""
+            className="w-auto h-[20em] aspect-auto rounded-lg"
+            onLoad={() => handleLoadedImage()}
+          />
         </div>
       )}
       <p className="text-sm py-5 w-[60%]">{content}</p>
-      <Likes
-        isProcessing={{ isLiking, isUnliking }}
-        removeLike={() => handleRemoveLike()}
-        addLike={handleAddLike}
-        liked={
-          posts?.likes.filter((like) => like.user_id === currentUser).length
-            ? true
-            : false
-        }
-        length={posts.likes.length}
-      />
+
+      <div className="w-[50%] flex justify-between border-b-[1px] border-b-zinc-100/20 p-2">
+        <Likes
+          isProcessing={{ isLiking, isUnliking }}
+          removeLike={() => handleRemoveLike()}
+          addLike={handleAddLike}
+          liked={
+            posts?.likes.filter((like) => like.user_id === currentUser).length
+              ? true
+              : false
+          }
+          length={posts.likes.length}
+        />
+        <Modal>
+          <Modal.Open opens="modalOpen">
+            <Button>
+              <FaRegCommentAlt
+                onClick={() => fetchComments(posts.id)}
+                size={15}
+                className="cursor-pointer"
+              />
+            </Button>
+          </Modal.Open>
+          <Modal.ModalWindow name="modalOpen">
+            <Comment />
+          </Modal.ModalWindow>
+        </Modal>
+      </div>
     </li>
   );
 }

@@ -1,6 +1,23 @@
 import { redirect } from "react-router-dom";
 import supabase, { supabaseUrl } from "./supabase";
 
+//* Function to match like and post
+async function matchLikeandPost(post) {
+  const postID = post?.map((ids) => ids.id);
+
+  const { data: likes } = await supabase
+    .from("likes")
+    .select("*")
+    .in("post_id", postID);
+
+  const foreignUserDetails = post.map((post) => {
+    const postLikes = likes.filter((like) => like.post_id === post.id);
+    return { ...post, likes: postLikes };
+  });
+
+  return foreignUserDetails;
+}
+
 //* SIGN UP WITH EMAIL AND PASSWORD
 export async function SignUpWithEmailandPass(email, password) {
   let { data, error } = await supabase.auth.signUp({
@@ -57,27 +74,12 @@ export async function loadUserDetails() {
 
   if (!userInfo) redirect("/login");
 
-  // let { data } = await supabase
-  //   .from("profiles")
-  //   .select("*")
-  //   .eq("id", userInfo.id);
-
   let { data: posts, error } = await supabase
     .from("posts")
     .select("*, profiles(username, avatar_url)")
     .eq("user_id", userInfo.id);
 
-  const postIDs = posts.map((id) => id.id);
-
-  const { data: likes } = await supabase
-    .from("likes")
-    .select("*")
-    .in("post_id", postIDs);
-
-  const postsAndLikes = posts.map((post) => {
-    const postLikes = likes.filter((like) => like.post_id === post.id);
-    return { ...post, likes: postLikes };
-  });
+  const postsAndLikes = await matchLikeandPost(posts);
 
   if (error) throw new Error(error.message);
   return postsAndLikes;
@@ -103,17 +105,7 @@ export async function getAllPosts({ pageParam = 0 }) {
     .neq("user_id", activeUserId)
     .range(start, end);
 
-  const postIDs = posts.map((id) => id.id);
-
-  const { data: likes } = await supabase
-    .from("likes")
-    .select("*")
-    .in("post_id", postIDs);
-
-  const postsAndLikes = posts.map((post) => {
-    const postLikes = likes.filter((like) => like.post_id === post.id);
-    return { ...post, likes: postLikes };
-  });
+  const postsAndLikes = await matchLikeandPost(posts);
 
   if (error) throw new Error(error.message);
   return postsAndLikes;
@@ -170,16 +162,34 @@ export async function foreignUser(user_id) {
     .select("*, profiles(username)")
     .eq("user_id", user_id);
 
-  const postID = post?.map((ids) => ids.id);
+  const foreignUserDetails = await matchLikeandPost(post);
+  if (error) throw new Error(error.message);
 
-  const { data: likes } = await supabase
-    .from("likes")
-    .select("*")
-    .in("post_id", postID);
-
-  const foreignUserDetails = post.map((post) => {
-    const postLikes = likes.filter((like) => like.post_id === post.id);
-    return { ...post, likes: postLikes };
-  });
   return foreignUserDetails;
+}
+
+//* Comments
+export async function getComments(id) {
+  console.log(id);
+  const { data: comments, error } = await supabase
+    .from("comments")
+    .select()
+    .eq("post_id", id);
+
+  if (error) console.error(error.message);
+  console.log(comments);
+  return comments;
+}
+
+//* change username
+
+export async function changeUsername(newName, user_id) {
+  console.log(newName, user_id);
+  const { error } = await supabase
+    .from("profiles")
+    .update({ username: newName })
+    .eq("id", user_id)
+    .select();
+
+  if (error) throw new Error(error.message);
 }

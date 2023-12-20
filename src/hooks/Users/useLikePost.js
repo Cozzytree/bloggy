@@ -11,12 +11,10 @@ export function useLikePost() {
   } = useMutation({
     mutationFn: ({ postId, userId }) => likePost(postId, userId),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["users"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["allPosts"],
-      });
+      queryClient.invalidateQueries({ active: true });
+      // queryClient.invalidateQueries({
+      //   queryKey: ["allPosts"],
+      // });
     },
     onError: () => {
       toast.error(error.message);

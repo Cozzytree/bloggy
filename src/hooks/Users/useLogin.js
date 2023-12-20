@@ -39,7 +39,10 @@ export function useLogin() {
         email: email,
         password: password,
       });
-      if (error) throw new Error(error.message);
+      if (error) {
+        toast.error("Invalid email or password");
+        throw new Error(error.message);
+      }
       if (!error) navigate("/user");
     } catch (error) {
       setLoginError(error.mesage);

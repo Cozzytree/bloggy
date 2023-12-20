@@ -4,7 +4,6 @@ import { useSearchParams } from "react-router-dom";
 
 export function useForeighUser() {
   const [searchParam] = useSearchParams();
-
   const foreignUserId = searchParam.get("");
 
   const {

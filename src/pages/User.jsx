@@ -45,7 +45,7 @@ function User() {
         localStorage.getItem("sb-vozbqbvaultodqeuimqv-auth-token")
       );
       if (data) return;
-      if (!users && !data) {
+      if (!users || !data) {
         navigate("/login");
         queryCache.clear();
       }

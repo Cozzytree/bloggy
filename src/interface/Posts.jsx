@@ -7,14 +7,13 @@ import Column from "./Column";
 // import Spinner from "./Spinner";
 import Modal from "./Modal";
 import Likes from "./Likes";
-import Comment from "./Comment";
+import AreYouSureWindow from "./AreYouSureWindow";
 import { useDeletePost } from "../hooks/Users/useDeletePosts";
 import { useCurrentUser } from "../hooks/Users/useCurrentUser";
 import { useLikePost } from "../hooks/Users/useLikePost";
 import { useUnlikePost } from "../hooks/Users/UseUnlikePost";
-import AreYouSureWindow from "./AreYouSureWindow";
 import { useClickOutside } from "../hooks/uiHooks/useClickOutside";
-import { useComments } from "../hooks/Users/useComments";
+import { useNavigate } from "react-router-dom";
 
 function Posts({ data, render }) {
   return (
@@ -32,7 +31,7 @@ export function PostsItem({ posts, type }) {
   const { deletePost, isDeleting } = useDeletePost();
   const { addLike, isLiking } = useLikePost();
   const { removeLike, isUnliking } = useUnlikePost();
-  const { fetchComments } = useComments();
+  const navigate = useNavigate();
   const ref = useRef();
 
   function handleAddLike() {
@@ -44,6 +43,10 @@ export function PostsItem({ posts, type }) {
 
   function handleLoadedImage() {
     setIsLoadedImage(true);
+  }
+
+  function handleNavigate(id) {
+    navigate(`/comments/${id}`);
   }
 
   useClickOutside(ref, () => setIsOptions(false));
@@ -123,20 +126,14 @@ export function PostsItem({ posts, type }) {
           }
           length={posts.likes.length}
         />
-        <Modal>
-          <Modal.Open opens="modalOpen">
-            <Button>
-              <FaRegCommentAlt
-                onClick={() => fetchComments(posts.id)}
-                size={15}
-                className="cursor-pointer"
-              />
-            </Button>
-          </Modal.Open>
-          <Modal.ModalWindow name="modalOpen">
-            <Comment />
-          </Modal.ModalWindow>
-        </Modal>
+
+        <FaRegCommentAlt
+          onClick={() => {
+            handleNavigate(posts.id);
+          }}
+          size={15}
+          className="cursor-pointer"
+        />
       </div>
     </li>
   );

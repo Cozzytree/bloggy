@@ -169,15 +169,13 @@ export async function foreignUser(user_id) {
 }
 
 //* Comments
-export async function getComments(id) {
-  console.log(id);
+export async function getComments(postId) {
   const { data: comments, error } = await supabase
     .from("comments")
-    .select()
-    .eq("post_id", id);
+    .select("*, profiles(username)")
+    .eq("post_id", postId);
 
   if (error) console.error(error.message);
-  console.log(comments);
   return comments;
 }
 
@@ -192,4 +190,15 @@ export async function changeUsername(newName, user_id) {
     .select();
 
   if (error) throw new Error(error.message);
+}
+
+//* ADD COMMENT
+export async function addComment(content, postid, userid) {
+  const { data, error } = await supabase
+    .from("comments")
+    .insert({ comments: content, post_id: postid, user_id: userid })
+    .select();
+
+  if (error) throw new Error(error.message);
+  return data;
 }

@@ -3,9 +3,12 @@ import useAllposts from "../hooks/Users/useAllPosts";
 import Spinner from "../interface/Spinner";
 import Logo from "../interface/Logo";
 import { PostsItem } from "../interface/Posts";
+import ErrorWindow from "../interface/ErrorWindow";
 
 function UsersPosts() {
   const { loadingPosts, allPosts, postsError } = useAllposts();
+  if (postsError) return <ErrorWindow>{postsError}</ErrorWindow>;
+
   return (
     <>
       <Logo />

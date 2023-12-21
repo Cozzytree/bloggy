@@ -1,4 +1,5 @@
 import Button from "./Button";
+import { useSpring, animated, useResize } from "@react-spring/web";
 import { useLogin } from "../hooks/Users/useLogin";
 import { useUpdateDetails } from "../hooks/Users/useUpdateDetails";
 import { useState } from "react";
@@ -55,6 +56,7 @@ function Form({ type, buttonLabel, formFor, setIsLogin }) {
   return (
     <>
       {(loadingLogin || loadingSignUp) && <Spinner />}
+
       <form
         onSubmit={(e) => {
           if (formFor === "login") {

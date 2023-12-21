@@ -12,6 +12,7 @@ import SendRecovery from "./interface/SendRecovery";
 import ResetPassword from "./pages/ResetPassword";
 import Search from "./pages/Search";
 import ForeighUser from "./pages/ForeighUser";
+import Comment from "./interface/Comment";
 
 const queryclient = new QueryClient({
   defaultOptions: {
@@ -42,6 +43,8 @@ function App() {
             <Route path="search" element={<Search />} />
 
             <Route path="search/:userId" element={<ForeighUser />} />
+
+            <Route path="comments/:commentId" element={<Comment />} />
           </Route>
         </Routes>
       </BrowserRouter>

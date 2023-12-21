@@ -15,7 +15,7 @@ export function ImageItem({ data }) {
     <div className="relative h-auto">
       {!isImageLoaded && <div className="image-loader"></div>}
       <img
-        className={`rounded-xl min-h-[15em] aspect-auto`}
+        className={`rounded-xl min-h-[8em] aspect-auto`}
         src={data.image}
         alt=""
         onLoad={() => setIsImageLoaded(true)}

@@ -1,20 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { getComments } from "../../supabase/supabaseAPI";
+import { useCurrentUser } from "../Users/useCurrentUser";
+import { useParams } from "react-router-dom";
 
 export function useComments() {
-  const {
-    data: comments,
-    isLoading: isLoadingComments,
-    refetch,
-  } = useQuery({
-    queryKey: ["comments"],
-    queryFn: getComments,
-    enabled: false,
+  const CurrentUser = useCurrentUser();
+  const { commentId } = useParams();
+
+  const { data: comments, isLoading: isLoadingComments } = useQuery({
+    queryKey: ["comments", CurrentUser],
+    queryFn: () => getComments(Number(commentId)),
   });
 
-  const fetchComments = async (id) => {
-    await refetch(["comments", id]);
-  };
-
-  return { fetchComments, comments, isLoadingComments };
+  return { comments, isLoadingComments };
 }

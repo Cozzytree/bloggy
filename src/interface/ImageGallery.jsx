@@ -17,10 +17,10 @@ export function ImageItem({ data }) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
-    <li className="relative h-autop-2 p-[2px] rounded-sm transition-all duration-150 cursor-pointer hoverImage">
+    <li className="relative h-autop-2 p-[2px] rounded-sm transition-all duration-150 cursor-pointer hoverImage flex justify-center">
       {!isImageLoaded && <div className="image-loader"></div>}
       <img
-        className={`rounded-md float-left w-[150px] h-[140px] sm:w-[200px] sm:h-[200px] md:h-[250px] md:w-[250px] object-cover`}
+        className={`rounded-md w-[150px] h-[140px] sm:w-[200px] sm:h-[200px] md:h-[250px] md:w-[250px] object-cover`}
         src={data}
         alt=""
         onLoad={() => setIsImageLoaded(true)}

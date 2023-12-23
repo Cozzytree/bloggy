@@ -1,4 +1,3 @@
-import { redirect } from "react-router-dom";
 import supabase, { supabaseUrl } from "./supabase";
 
 //* Function to match like and post
@@ -10,9 +9,12 @@ async function matchLikeandPost(post) {
     .select("*")
     .in("post_id", postID);
 
+  const { data: comments } = await supabase.from("comments").select("post_id");
+
   const foreignUserDetails = post.map((post) => {
     const postLikes = likes.filter((like) => like.post_id === post.id);
-    return { ...post, likes: postLikes };
+    const comment = comments.filter((com) => com.post_id === post.id);
+    return { ...post, likes: postLikes, comment: comment.length };
   });
 
   return foreignUserDetails;
@@ -60,17 +62,15 @@ export async function insertPosts(post) {
   if (post?.formData?.imageFile === "") return data;
 
   for (let j = 0; j < imageArray.length; j++) {
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("userPhotos")
       .upload(imageArray[j].name, imageArray[j]);
 
     if (error) {
-      console.error(error.message);
+      throw new Error("something went wrong");
     }
   }
 
-  if (data) console.log("data", data);
-  if (error) console.error(error);
   return data;
 }
 
@@ -80,7 +80,9 @@ export async function loadUserDetails() {
     data: { user: userInfo },
   } = await supabase.auth.getUser();
 
-  if (!userInfo) redirect("/login");
+  if (!userInfo) {
+    throw new Error("Invalid");
+  }
 
   let { data: posts, error } = await supabase
     .from("posts")

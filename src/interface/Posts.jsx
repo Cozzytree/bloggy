@@ -1,6 +1,7 @@
-import { FaRegCommentAlt } from "react-icons/fa";
+// import { FaRegCommentAlt } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import { useEffect, useState } from "react";
+import { BsAppIndicator } from "react-icons/bs";
 // import Spinner from "./Spinner";
 
 import Likes from "./Likes";
@@ -92,7 +93,7 @@ export function PostsItem({ posts, type }) {
     <li
       className={`${
         posts?.image.length ? "grid grid-rows-[1fr_auto_auto]" : null
-      } list-none text-lime-100 font-NovaSquare space-y-5 bg-zinc-700/10 border-[0.5px] border-zinc-500/25 py-2 px-5 rounded-md w-[350px] md:w-[600px] shadow-md shadow-zinc-900 whitespace-pre-wrap remove-scroll-edge`}
+      } list-none font-NovaSquare space-y-5 bg-zinc-900/30 border-[0.5px] border-zinc-500/25 py-2 px-5 rounded-md w-[350px] md:w-[600px] shadow-md shadow-zinc-800 whitespace-pre-wrap remove-scroll-edge`}
     >
       <div className="flex justify-between">
         <div className="flex flex-col">
@@ -163,14 +164,18 @@ export function PostsItem({ posts, type }) {
           }
           length={posts.likes.length}
         />
-
-        <FaRegCommentAlt
-          onClick={() => {
-            handleNavigate(posts.id);
-          }}
-          size={15}
-          className="cursor-pointer w-[12px] md:w-[20px]"
-        />
+        <span className="relative">
+          <span className="absolute text-lime-400 font-bold text-sm top-[-50%] right-1 z-10">
+            {posts.comment}
+          </span>
+          <BsAppIndicator
+            onClick={() => {
+              handleNavigate(posts.id);
+            }}
+            size={20}
+            className="cursor-pointer w-[12px] md:w-[20px]"
+          />
+        </span>
       </div>
     </li>
   );

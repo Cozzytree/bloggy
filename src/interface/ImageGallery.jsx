@@ -1,10 +1,15 @@
 import { useState } from "react";
 
-function ImageGallery({ data, render }) {
+function ImageGallery({ data }) {
+  const imageArray = data?.map((ele) => ele.image);
+  const allImages = [].concat(...imageArray.filter(Boolean));
+
   return (
-    <div className="grid grid-cols-[1fr_1fr_1fr] gap-3 md:w-[55vw] w-[90vw] pb-[10em] bg-zinc-700/50 py-5 px-5 rounded-xl my-4">
-      {data?.map(render)}
-    </div>
+    <ul className="grid grid-cols-[1fr_1fr_1fr] md:w-[55vw] w-[90vw] pb-[10em] bg-zinc-700/50 rounded-md my-4 list-none p-1">
+      {allImages.map((img, i) => (
+        <ImageItem data={img} key={i} />
+      ))}
+    </ul>
   );
 }
 
@@ -12,15 +17,15 @@ export function ImageItem({ data }) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
-    <div className="relative h-auto">
+    <li className="relative h-autop-2 p-[2px] rounded-sm transition-all duration-150 cursor-pointer hoverImage">
       {!isImageLoaded && <div className="image-loader"></div>}
       <img
-        className={`rounded-xl min-h-[8em] aspect-auto`}
-        src={data.image}
+        className={`rounded-md float-left w-[150px] h-[140px] sm:w-[200px] sm:h-[200px] md:h-[250px] md:w-[250px] object-cover`}
+        src={data}
         alt=""
         onLoad={() => setIsImageLoaded(true)}
       />
-    </div>
+    </li>
   );
 }
 

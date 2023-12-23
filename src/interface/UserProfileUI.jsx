@@ -40,7 +40,7 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
           <img
             src={username?.profiles.avatar_url}
             alt="profile"
-            className={`md:w-[15em] w-[10em] h-[10em] md:h-[14em] aspect-auto rounded-2xl`}
+            className={`md:w-[15em] w-[8em] h-[8em] md:h-[15em] aspect-auto rounded-2xl`}
           />
         ) : (
           <div className="flex flex-col justify-between items-center relative">
@@ -68,25 +68,25 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
         <div className="flex gap-4 relative justify-between">
           {isEditName ? (
             <input
-              className="text-zinc-100 bg-transparent text-xl py-1 px-1 focus:outline-none font-NovaSquare font-semibold border-[0.5px] border-zinc-700 rounded-md"
+              className="text-zinc-100 bg-transparent py-1 px-1 focus:outline-none font-NovaSquare font-semibold border-[0.5px] border-zinc-700 rounded-md text-xs md:text-[1em]"
               type="text"
               value={newUserName}
               onChange={(e) => setNewUserName(e.target.value)}
               autoFocus
             />
           ) : (
-            <h1 className="mb-5 text-zinc-50 text-xl font-bold font-NovaSquare">
+            <h1 className="mb-5 text-zinc-50 text-sm md:text-md font-bold font-NovaSquare">
               {username?.profiles.username}
             </h1>
           )}
 
-          {}
           <span className="flex gap-5">
             <MdOutlineEdit
               onClick={() => setIsEditName((current) => !current)}
               fill="silver"
               cursor="pointer"
               size={18}
+              className="w-[1em]"
             />
             {isEditName && (
               <FaCheck
@@ -97,6 +97,7 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
                 fill="green"
                 size={20}
                 cursor="pointer"
+                className="w-[1em]"
               />
             )}
           </span>

@@ -30,11 +30,17 @@ export async function SignUpWithEmailandPass(email, password) {
 
 //* INSERT POSTS
 export async function insertPosts(post) {
-  console.log(post);
-  const image = post.formData.imageFile.name;
-  const imagePath = image
-    ? `${supabaseUrl}/storage/v1/object/public/usersPhotos/${image}`
-    : null;
+  let fileName = [];
+  let imagePath = [];
+  const imageArray = post?.formData.imageFile;
+  for (let i = 0; i < imageArray?.length; i++) {
+    fileName.push(imageArray[i].name.replaceAll("-", "_"));
+    imagePath.push(
+      imageArray[i]
+        ? `${supabaseUrl}/storage/v1/object/public/userPhotos/${imageArray[i].name}`
+        : null
+    );
+  }
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -46,20 +52,22 @@ export async function insertPosts(post) {
     .insert({
       content: post.formData.userPost,
       user_id: user.id,
-      image: imagePath,
+      image: [...imagePath],
     })
     .single();
+  console.log(data, error);
 
-  if (post.formData.imageFile === "") return data;
+  if (post?.formData?.imageFile === "") return data;
 
-  const { error: storageError } = await supabase.storage
-    .from("usersPhotos")
-    .upload(image, post.formData.imageFile, {
-      cacheControl: 3600,
-      upsert: true,
-    });
+  for (let j = 0; j < imageArray.length; j++) {
+    const { data, error } = await supabase.storage
+      .from("userPhotos")
+      .upload(imageArray[j].name, imageArray[j]);
 
-  if (storageError) await supabase.from("posts").delete().eq("id", data.id);
+    if (error) {
+      console.error(error.message);
+    }
+  }
 
   if (data) console.log("data", data);
   if (error) console.error(error);

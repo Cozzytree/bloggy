@@ -8,6 +8,7 @@ import { MdEmail } from "react-icons/md";
 import { FaUnlock } from "react-icons/fa";
 import { useSignUp } from "../hooks/Users/useSignUp";
 import Spinner from "./Spinner";
+import toast from "react-hot-toast";
 
 const divStyle = "flex items-start flex-col justify-between gap-1";
 const inputStyle =
@@ -29,7 +30,10 @@ function Form({ type, buttonLabel, formFor, setIsLogin }) {
 
   function handleLogin(e) {
     e.preventDefault();
-    if (!email && !password) return;
+    if (!email && !password) {
+      toast.error("enter email and password");
+      return;
+    }
 
     if (email && !password) fetchLogin(email);
     if (email && password && !loginError) {
@@ -69,7 +73,7 @@ function Form({ type, buttonLabel, formFor, setIsLogin }) {
             handleSignUp(e);
           }
         }}
-        className="flex flex-col justify-center gap-4 px-0 pt-0 pb-5  text-md max-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] border-[1px] border-lime-400/60 rounded-md bg-zinc-700/50 font-NovaSquare text-zinc-50 items-center transition-all duration-150 relative "
+        className="flex flex-col justify-center gap-4 px-0 pt-0 pb-5  text-md max-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] border-[1px] border-lime-400/60 rounded-md bg-zinc-700/50 font-NovaSquare text-zinc-50 items-center transition-all duration-150 relative slowAndSteady"
       >
         {type === "userDetails" && (
           <>

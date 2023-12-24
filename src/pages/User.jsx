@@ -11,7 +11,6 @@ import ImageGallery from "../interface/ImageGallery";
 import Spinner from "../interface/Spinner";
 import Button from "../interface/Button";
 import UserProfileUI from "../interface/UserProfileUI";
-// import { useDeletePost } from "../hooks/Users/useDeletePosts";
 import Modal from "../interface/Modal";
 import AreYouSureWindow from "../interface/AreYouSureWindow";
 import Navigation from "../interface/Navigation";
@@ -24,6 +23,7 @@ function User() {
   const { loadingUsers, users } = useUser();
   const { addPosts, isLoadingAddPosts } = useInsert();
   const [searchParams, setSearcParams] = useSearchParams();
+
   useEffect(() => {
     if (users) {
       searchParams.set("", users?.[0]?.profiles.username);

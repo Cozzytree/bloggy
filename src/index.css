@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 ::selection {
-  background-color: rgb(0, 174, 255);
+  background-color: rgb(0, 41, 61);
 }
 
 .text_shadow {
@@ -115,4 +115,25 @@
 .hoverImage:has(img:hover) {
   scale: 0.9;
   opacity: 0.7;
+}
+.customfileButton {
+  color: transparent;
+}
+
+.customfileButton::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.customfileButton::before {
+  content: "✏️";
+  display: inline-block;
+  color: whitesmoke;
+  border-radius: 3px;
+  padding: 1px 1px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1em;
 }

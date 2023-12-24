@@ -118,7 +118,7 @@ export function PostsItem({ posts, type }) {
       {/* // * image  */}
 
       {posts?.image.length ? (
-        <div className="w-[100%] h-auto flex justify-center flex-col items-center gap-3">
+        <div className="relative w-[100%] h-auto flex justify-center flex-col items-center gap-3">
           {!isLoadedImage && <div className="image-loader h-[20em]"></div>}
 
           <img
@@ -131,7 +131,7 @@ export function PostsItem({ posts, type }) {
 
           <div className="flex space-center slowAndSteady items-center h-5">
             {posts.image.map((dot, i) => (
-              <>
+              <span key={i}>
                 {posts.image.length > 1 && (
                   <GoDotFill
                     fill="white"
@@ -143,7 +143,7 @@ export function PostsItem({ posts, type }) {
                     } cursor-pointer`}
                   />
                 )}
-              </>
+              </span>
             ))}
           </div>
         </div>

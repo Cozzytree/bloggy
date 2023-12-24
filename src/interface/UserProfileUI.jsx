@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useUpdateProfileImage } from "../hooks/Users/useUpdateProfileImage";
 import { MdOutlineEdit } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
 import { FaCheck } from "react-icons/fa6";
 import { useChangeUsername } from "../hooks/Users/useChangeUsername";
-import Button from "./Button";
 import Spinner from "./Spinner";
 import ErrorWindow from "./ErrorWindow";
 
@@ -23,6 +23,8 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
   function handleChangeProffileImage(file) {
     console.log(file);
     changeImage(file);
+    setIsAadd(false);
+    setFile("");
   }
 
   function handleNewName() {
@@ -36,36 +38,48 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
   return (
     <>
       {isPending && <Spinner />}
-      <div className="min-h-[10em] w-[100%] flex items-end mt-5 space-x-10">
+      <div className="min-h-[10em] w-[100%] flex items-end mt-5 space-x-10 relative">
         {username?.profiles.avatar_url ? (
           <img
             src={username?.profiles.avatar_url}
             alt="profile"
-            className={`md:w-[15em] w-[8em] h-[8em] md:h-[15em] aspect-auto rounded-2xl`}
+            className={`md:w-[15em] w-[10em] h-[10em] md:h-[15em] aspect-auto rounded-2xl`}
           />
         ) : (
-          <div className="flex flex-col justify-between items-center relative">
-            <input
-              onChange={(e) => {
-                setFile(e.target.files[0]);
-                setIsAadd((current) => !current);
-              }}
-              defaultValue={""}
-              type="file"
-              accept="image/*"
-              className="bg-zinc-900 text-zinc-90 opacity-80 defaultProfile cursor-pointer"
-            />
-            {(isAdd || file) && (
-              <Button
-                type="small"
-                className="absolute top-[50%]"
-                onClick={() => handleChangeProffileImage(file)}
-              >
-                Add
-              </Button>
-            )}
-          </div>
+          <div className="flex flex-col justify-between defaultProfile items-center relative"></div>
         )}
+        <input
+          onChange={(e) => {
+            setFile(e.target.files[0]);
+            setIsAadd((current) => !current);
+          }}
+          defaultValue={""}
+          type="file"
+          accept="image/*"
+          className="customfileButton w-[4em] absolute top-0 left-[12%]"
+        />
+
+        <span className={`flex gap-2`}>
+          {isAdd && (
+            <>
+              <RxCross2
+                className="cursor-pointer text-red-400 font-bold"
+                size={15}
+                onClick={() => {
+                  setIsAadd((current) => !current);
+                  setFile("");
+                  console.log(isAdd, file);
+                }}
+              />
+              <FaCheck
+                size={15}
+                fill="green"
+                onClick={() => handleChangeProffileImage(file)}
+              />
+            </>
+          )}
+        </span>
+
         <div className="flex gap-4 relative justify-between">
           {isEditName ? (
             <input

@@ -4,13 +4,12 @@ import Spinner from "./Spinner";
 import { useEffect } from "react";
 
 function ProtectedRoute({ children }) {
-  const { isLoading, isAuthenticated } = useGetCurrentUser();
+  const { data, isLoading, isAuthenticated } = useGetCurrentUser();
   const navigate = useNavigate();
-  console.log(isAuthenticated);
 
   useEffect(() => {
-    if (!isAuthenticated && !isLoading) navigate("/login");
-  }, [isAuthenticated, isLoading, navigate]);
+    if (!isAuthenticated && !isLoading && !data) navigate("/login");
+  }, [isAuthenticated, isLoading, navigate, data]);
 
   if (isLoading)
     return (

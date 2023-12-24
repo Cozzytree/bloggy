@@ -13,7 +13,7 @@ export function useSignUp() {
         email: email,
         password: password,
         options: {
-          emailRedirectTo: "http://localhost:5173/details",
+          emailRedirectTo: "http://localhost:5173/user",
         },
       });
       if (error) toast.error(error.message);

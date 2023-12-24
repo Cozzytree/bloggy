@@ -1,5 +1,5 @@
 import Button from "./Button";
-import { useSpring, animated, useResize } from "@react-spring/web";
+// import { useSpring, animated, useResize } from "@react-spring/web";
 import { useLogin } from "../hooks/Users/useLogin";
 import { useUpdateDetails } from "../hooks/Users/useUpdateDetails";
 import { useState } from "react";
@@ -20,8 +20,7 @@ const h1Style =
 
 function Form({ type, buttonLabel, formFor, setIsLogin }) {
   const { SignUpWithEmailandPass, SignUpError, loadingSignUp } = useSignUp();
-  const { fetchLogin, loadingLogin, loginError, LoginwithEmailandPass } =
-    useLogin();
+  const { fetchLogin, loadingLogin, loginError, login, isLogging } = useLogin();
   const { updateDetails } = useUpdateDetails();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +36,9 @@ function Form({ type, buttonLabel, formFor, setIsLogin }) {
 
     if (email && !password) fetchLogin(email);
     if (email && password && !loginError) {
-      LoginwithEmailandPass(email, password);
+      login({ email, password });
+      setEmail("");
+      setPassword("");
     }
   }
 
@@ -59,7 +60,7 @@ function Form({ type, buttonLabel, formFor, setIsLogin }) {
 
   return (
     <>
-      {(loadingLogin || loadingSignUp) && <Spinner />}
+      {(loadingLogin || loadingSignUp || isLogging) && <Spinner />}
 
       <form
         onSubmit={(e) => {

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../hooks/Users/useUsersDetails";
 import { useInsert } from "../hooks/Users/useInsertPost";
-import { QueryCache } from "@tanstack/react-query";
 import { FaPowerOff } from "react-icons/fa";
 import { useLogout } from "../hooks/Users/logout";
 import Posts, { PostsItem } from "../interface/Posts";
@@ -17,7 +16,6 @@ import Navigation from "../interface/Navigation";
 import FormAddPost from "../interface/FormAddPost";
 
 function User() {
-  const queryCache = new QueryCache();
   const [isPosts, setIsPosts] = useState(true);
   const { userLogout } = useLogout();
   const { loadingUsers, users } = useUser();

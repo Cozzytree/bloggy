@@ -30,6 +30,17 @@ export async function getCurrentUser() {
   return user?.user;
 }
 
+//*Login
+export async function login({ email, password }) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  console.log(error);
+  if (error) return new Error(error.message);
+  return data.user;
+}
+
 //* SIGN UP WITH EMAIL AND PASSWORD
 export async function SignUpWithEmailandPass(email, password) {
   let { data, error } = await supabase.auth.signUp({

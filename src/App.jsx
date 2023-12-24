@@ -44,7 +44,7 @@ function App() {
                 </ProtectedRoute>
               }
             >
-              <Route index element={<Navigate to="user" />} />
+              <Route index element={<Navigate replace to="user" />} />
               <Route path="user" element={<User />} />
               <Route path="home" element={<UsersPosts />} />
               <Route path="details" element={<UserInformation />} />

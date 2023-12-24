@@ -16,11 +16,11 @@ function Likes({ length, liked, addLike, removeLike, isProcessing }) {
           type="like"
           className={`${
             liked ? "border-lime-500 text-zinc-900 font-black" : null
-          } flex items-center justify-center gap-1 text-[0.8em] px-4 border-[1px] rounded-md w-[4em] md-w-[5em] transition-all duration-150 relative border-zinc-700/50`}
+          } flex items-center justify-center gap-1 text-[0.8em] px-4 border-[1px] rounded-md w-[4em] md-w-[5em] transition-all duration-150 relative border-zinc-700/50 h-[2em]`}
         >
           {((isLiking || isUnliking) && (
             <div className="like-spinner">
-              <AiOutlineLoading3Quarters size={20} />
+              <AiOutlineLoading3Quarters size={15} fill="white" />
             </div>
           )) ||
             (liked && (

@@ -12,7 +12,7 @@ function SendRecovery() {
     recoverPassword(email);
   }
   return (
-    <>
+    <div className="bg-zinc-800 text-zinc-100 remove-scroll-edge min-h-screen flex flex-col items-center">
       <form
         onSubmit={handleRecover}
         className="text-zinc-50 font-NovaSquare flex flex-col items-center mt-[5em] gap-[1em] bg-zinc-700/80 py-5 px-5 rounded-md shadow-md shadow-zinc-700 border-[1px] border-zinc-700 w-[25em]"
@@ -31,7 +31,7 @@ function SendRecovery() {
           change password
         </Button>
       </form>
-    </>
+    </div>
   );
 }
 

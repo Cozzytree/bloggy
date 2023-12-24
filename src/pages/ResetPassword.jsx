@@ -20,7 +20,7 @@ function ResetPassword() {
     if (!err) navigate("/user");
   }
   return (
-    <>
+    <div className="bg-zinc-800 text-zinc-100 remove-scroll-edge min-h-screen flex flex-col items-center">
       <form
         className="text-zinc-100 font-NovaSquare flex flex-col mt-[5em] gap-4 w-[20em] items-center bg-zinc-700/70 py-4 px-5 rounded-md shadow-md shadow-zinc-600/60"
         action=""
@@ -47,7 +47,7 @@ function ResetPassword() {
         </div>
         <Button type="small">Confirm</Button>
       </form>
-    </>
+    </div>
   );
 }
 

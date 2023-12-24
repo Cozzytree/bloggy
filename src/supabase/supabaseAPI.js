@@ -20,6 +20,16 @@ async function matchLikeandPost(post) {
   return foreignUserDetails;
 }
 
+//* Get current user
+export async function getCurrentUser() {
+  const { data: session } = await supabase.auth.getSession();
+  if (!session.session) return null;
+  const { data: user, error } = await supabase.auth.getUser();
+
+  if (error) throw new Error(error.message);
+  return user?.user;
+}
+
 //* SIGN UP WITH EMAIL AND PASSWORD
 export async function SignUpWithEmailandPass(email, password) {
   let { data, error } = await supabase.auth.signUp({
@@ -80,9 +90,7 @@ export async function loadUserDetails() {
     data: { user: userInfo },
   } = await supabase.auth.getUser();
 
-  if (!userInfo) {
-    throw new Error("Invalid");
-  }
+  if (!userInfo) return;
 
   let { data: posts, error } = await supabase
     .from("posts")

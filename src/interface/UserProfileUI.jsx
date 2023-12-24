@@ -5,6 +5,7 @@ import { FaCheck } from "react-icons/fa6";
 import { useChangeUsername } from "../hooks/Users/useChangeUsername";
 import Button from "./Button";
 import Spinner from "./Spinner";
+import ErrorWindow from "./ErrorWindow";
 
 const liStyle =
   "text-center cursor-pointer md:hover:bg-lime-300/10 transition-all duration-100 rounded-md px-5 py-1 font-NovaSquare font-medium text-sm";
@@ -27,10 +28,10 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
   function handleNewName() {
     const oldName = username?.profiles.username;
     const newUser = newUserName;
-    if (oldName !== newUser) {
-      newName(newUser);
-    }
+    if (oldName !== newUser) newName(newUser);
   }
+
+  if (error) return <ErrorWindow>{error}</ErrorWindow>;
 
   return (
     <>

@@ -19,10 +19,6 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 1.5em;
-  height: 1.5em;
-  border-top: transparent;
   animation: rotate 1000ms linear infinite;
 }
 
@@ -47,7 +43,7 @@
   width: 3.5em;
   height: 3.5em;
   border-radius: 50%;
-  border: 4px solid #ffffff;
+  border: 4px solid #c7c7c7;
   border-left: transparent;
   border-top: 2px solid transparent;
   position: fixed;
@@ -58,11 +54,9 @@
 }
 @keyframes rotate {
   0% {
-    opacity: 0;
     transform: translate(-50%, -50%) rotate(0deg);
   }
   100% {
-    opacity: 0.8;
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
@@ -106,7 +100,7 @@
 }
 
 .slowAndSteady {
-  animation: slow 0.5s ease;
+  animation: slow 0.5s ease linear infinite;
 }
 
 @keyframes slow {

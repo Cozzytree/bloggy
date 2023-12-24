@@ -22,10 +22,10 @@ function FormAddPost({ addPosts, isLoading }) {
   return (
     <>
       <Button
-        className="bg-zinc-600 rounded-[50%] w-[4em] h-[4em] flex justify-center items-center"
+        className="bg-zinc-600 rounded-[50%] w-[2.5em] h-[2.5em] flex justify-center items-center"
         onClick={() => setAddForm((current) => !current)}
       >
-        <IoAddOutline size={50} />
+        <IoAddOutline size={20} fontWeight={800} color="silver" />
       </Button>
       <form
         action=""

@@ -1,11 +1,25 @@
 import { useNavigate } from "react-router-dom";
-import supabase from "../../supabase/supabase";
+import { logOut } from "../../supabase/supabaseAPI";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export function useLogout() {
   const navigate = useNavigate();
-  async function userLogout() {
-    let { error } = await supabase.auth.signOut();
-    if (!error) navigate("/login");
-  }
-  return { userLogout };
+  const queryClient = useQueryClient();
+  const {
+    mutate: userLogout,
+    isPending: isLoggingOut,
+    error,
+  } = useMutation({
+    mutationFn: logOut,
+    onSuccess: () => {
+      navigate("/login");
+      queryClient.removeQueries();
+    },
+    onError: () => {
+      toast.error(error.message);
+    },
+  });
+
+  return { userLogout, isLoggingOut };
 }

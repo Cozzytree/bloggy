@@ -93,14 +93,14 @@ export function PostsItem({ posts, type }) {
     <li
       className={`${
         posts?.image.length ? "grid grid-rows-[1fr_auto_auto]" : null
-      } list-none font-NovaSquare space-y-5 bg-zinc-900/30 border-[0.5px] border-zinc-500/25 py-2 px-5 rounded-md w-[350px] md:w-[600px] shadow-md shadow-zinc-800 whitespace-pre-wrap remove-scroll-edge`}
+      } list-none font-NovaSquare space-y-2 bg-zinc-900/30 border-[0.5px] border-zinc-500/25 py-2 px-5 rounded-md w-[350px] md:w-[600px] shadow-md shadow-zinc-800 whitespace-pre-wrap remove-scroll-edge`}
     >
       <div className="flex justify-between">
         <div className="flex flex-col">
-          <h1 className="text-md text-lime-100 text-md font-medium">
+          <h1 className="text-sm text-lime-100 text-md font-medium">
             {profiles?.username}
           </h1>
-          <span className="text-[0.70em] text-zinc-400">
+          <span className="text-[0.6em] text-zinc-400">
             {Intl.DateTimeFormat("en", {
               timeStyle: "medium",
               dateStyle: "medium",
@@ -125,7 +125,7 @@ export function PostsItem({ posts, type }) {
             src={posts?.image[currentImage]}
             key={Math.random() * 1000}
             alt=""
-            className={`w-[200px] h-[250px] md:w-[350px] md:h-[350px] rounded-lg slowAndSteady object-cover swipe-${posts.id} float-left`}
+            className={`w-[300px] h-[350px] md:w-auto md:h-autorounded-lg slowAndSteady object-cover swipe-${posts.id} float-left`}
             onLoad={() => handleLoadedImage()}
           />
 
@@ -152,7 +152,7 @@ export function PostsItem({ posts, type }) {
       {/* {Post content} */}
       <p className="text-sm py-5 w-[60%]">{content}</p>
 
-      <div className="w-[50%] flex justify-between border-b-[1px] border-b-zinc-100/20 p-2 items-start">
+      <div className="w-[60%] md:w-[50%] flex justify-between border-b-[1px] border-b-zinc-100/20 p-2 items-start">
         <Likes
           isProcessing={{ isLiking, isUnliking }}
           removeLike={() => handleRemoveLike()}
@@ -173,7 +173,7 @@ export function PostsItem({ posts, type }) {
               handleNavigate(posts.id);
             }}
             size={20}
-            className="cursor-pointer w-[12px] md:w-[20px]"
+            className="cursor-pointer w-[12px] md:w-[17px]"
           />
         </span>
       </div>

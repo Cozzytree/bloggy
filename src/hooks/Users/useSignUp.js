@@ -1,31 +1,22 @@
-import { useState } from "react";
-import supabase from "../../supabase/supabase";
 import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { signUp as signUpApi } from "../../supabase/supabaseAPI";
 
 export function useSignUp() {
-  const [loadingSignUp, setIsLoading] = useState(false);
-  const [SignUpError, setError] = useState("");
+  const {
+    mutate: signUp,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: ({ email, password, full_name, avatar_url }) =>
+      signUpApi({ email, password, full_name, avatar_url }),
+    onSuccess: () => {
+      toast.success("Account successfully created Confirm your email");
+    },
+    onError: () => {
+      toast.error(error.message);
+    },
+  });
 
-  async function SignUpWithEmailandPass(email, password) {
-    try {
-      setIsLoading(true);
-      let { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-          emailRedirectTo: "http://localhost:5173/user",
-        },
-      });
-      if (error) toast.error(error.message);
-
-      if (data) toast.success("Check Your email");
-      return data;
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  return { loadingSignUp, SignUpError, SignUpWithEmailandPass };
+  return { signUp, isPending };
 }

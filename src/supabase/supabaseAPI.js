@@ -24,11 +24,36 @@ async function matchLikeandPost(post) {
 export async function getCurrentUser() {
   const { data: session } = await supabase.auth.getSession();
   if (!session.session) return null;
-  const { data: user, error } = await supabase.auth.getUser();
 
+  const { data: user, error } = await supabase.auth.getUser();
   if (error) throw new Error(error.message);
   return user?.user;
 }
+
+//* sign Up
+export async function signUp({ email, password, full_name }) {
+  const { data: user, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { full_name, avatar_url: "" },
+      emailRedirectTo: "https://localhost:5173/login",
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return user.user;
+}
+
+//* Insert users into profiles
+// export async function insertUser({ user_id, username }) {
+//   const { data } = await supabase
+//     .from("profiles")
+//     .insert({ id: user_id, username, avatar_url: "" });
+//   return data;
+// }
 
 //*Login
 export async function login({ email, password }) {
@@ -36,9 +61,8 @@ export async function login({ email, password }) {
     email,
     password,
   });
-  console.log(error);
   if (error) return new Error(error.message);
-  return data.user;
+  return data;
 }
 
 //* SIGN UP WITH EMAIL AND PASSWORD
@@ -110,8 +134,14 @@ export async function loadUserDetails() {
 
   const postsAndLikes = await matchLikeandPost(posts);
 
+  let { data: currentUser } = await supabase
+    .from("profiles")
+    .select()
+    .eq("id", userInfo.id)
+    .single();
+
   if (error) throw new Error(error.message);
-  return postsAndLikes;
+  return { postsAndLikes, currentUser };
 }
 
 //* DELETE POSTS
@@ -230,4 +260,11 @@ export async function addComment(content, postid, userid) {
 
   if (error) throw new Error(error.message);
   return data;
+}
+
+//* Log out
+
+export async function logOut() {
+  const { error } = await supabase.auth.signOut();
+  if (error) throw new Error(error.message);
 }

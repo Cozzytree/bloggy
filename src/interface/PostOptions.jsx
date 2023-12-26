@@ -1,6 +1,5 @@
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import Button from "./Button";
-import Column from "./Column";
 import Modal from "./Modal";
 import { useState } from "react";
 import AreYouSureWindow from "./AreYouSureWindow";
@@ -10,10 +9,10 @@ function PostOptions({ deleting, deletePost }) {
   return (
     <div className="relative">
       <Button onClick={() => setIsOptions((current) => !current)}>
-        <HiOutlineDotsHorizontal />
+        <HiOutlineDotsHorizontal className="z-0" />
       </Button>
       {isOptions && (
-        <Column className="absolute right-4 top-1">
+        <div className="absolute right-4 top-1">
           <Modal>
             <Modal.Open opens="openModal">
               <Button className="slowAndSteady">Delete</Button>
@@ -33,7 +32,7 @@ function PostOptions({ deleting, deletePost }) {
               </AreYouSureWindow>
             </Modal.ModalWindow>
           </Modal>
-        </Column>
+        </div>
       )}
     </div>
   );

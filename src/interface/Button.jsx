@@ -2,15 +2,15 @@ function Button({ type, children, onClick, className, disabled, onMouseDown }) {
   const buttonCss =
     "rounded-md font-bold bg-lime-900 text-lime-100 font-NovaSquare tracking-wide md:hover:bg-lime-300 md:hover:text-zinc-800 duration-200 transition-all";
 
-  if (type === "secondary")
-    return (
-      <button
-        onClick={onClick}
-        className="text-lime-400 md:hover:bg-lime-100 md:hover:text-lime-800 transition-all duration-100 bg-lime-50/10 text-[0.8em] px-2 py-1 h-[2em] rounded-md whitespace-nowrap"
-      >
-        {children}
-      </button>
-    );
+  // if (type === "secondary")
+  //   return (
+  //     <button
+  //       onClick={onClick}
+  //       className="text-lime-400 md:hover:bg-lime-100 md:hover:text-lime-800 transition-all duration-100 bg-lime-50/10 text-[0.8em] px-2 py-1 h-[2em] rounded-md whitespace-nowrap"
+  //     >
+  //       {children}
+  //     </button>
+  //   );
 
   if (type === "small")
     return (

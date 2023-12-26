@@ -2,7 +2,7 @@ import { useState } from "react";
 import ImageView from "./ImageView";
 
 function ImageGallery({ data }) {
-  const imageArray = data?.map((ele) => ele.image);
+  const imageArray = data?.postsAndLikes?.map((ele) => ele.image);
   const allImages = [].concat(...imageArray.filter(Boolean));
 
   return (

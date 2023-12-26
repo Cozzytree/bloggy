@@ -3,12 +3,13 @@ import supabase from "../../supabase/supabase";
 import toast from "react-hot-toast";
 import { login as withPassword } from "../../supabase/supabaseAPI";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useLogin() {
   const [loadingLogin, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
+  const queryClent = useQueryClient();
 
   async function fetchLogin(email) {
     try {
@@ -40,32 +41,13 @@ export function useLogin() {
     mutate: login,
   } = useMutation({
     mutationFn: ({ email, password }) => withPassword({ email, password }),
-    onSuccess: () => {
-      navigate("/user");
+    onSuccess: (user) => {
+      queryClent.setQueryData(["getCurrentUser"], user.user);
+      navigate("/user", { replace: true });
     },
     onError: () => {
       toast.error(error.message);
     },
   });
-
-  // async function LoginwithEmailandPass(email, password) {
-  //   try {
-  //     setIsLoading(true);
-  //     let { error } = await supabase.auth.signInWithPassword({
-  //       email: email,
-  //       password: password,
-  //     });
-  //     if (error) {
-  //       toast.error("Invalid email or password");
-  //       throw new Error(error.message);
-  //     }
-  //     if (!error) navigate("/user");
-  //   } catch (error) {
-  //     setLoginError(error.mesage);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }
-
   return { fetchLogin, loadingLogin, loginError, login, isLogging };
 }

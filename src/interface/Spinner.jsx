@@ -1,6 +1,6 @@
-function Spinner() {
+function Spinner({ bg }) {
   return (
-    <div className="fixed inset-0 backdrop-blur-sm z-50 h-full">
+    <div className={`fixed inset-0 ${bg} backdrop-blur-sm z-[999] h-full`}>
       <div className="spinner"></div>
     </div>
   );

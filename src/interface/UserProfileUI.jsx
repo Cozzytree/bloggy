@@ -14,9 +14,7 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
   const [file, setFile] = useState("");
   const [isAdd, setIsAadd] = useState(false);
   const [isEditName, setIsEditName] = useState(false);
-  const [newUserName, setNewUserName] = useState(
-    username?.profiles.username || ""
-  );
+  const [newUserName, setNewUserName] = useState(username?.username || "");
   const { newName, error, isPending } = useChangeUsername();
   const { changeImage } = useUpdateProfileImage();
 
@@ -38,10 +36,10 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
   return (
     <>
       {isPending && <Spinner />}
-      <div className="min-h-[10em] w-[100%] flex items-end mt-5 space-x-10 relative">
-        {username?.profiles.avatar_url ? (
+      <div className="min-h-[10em] w-[100%] flex items-baseline mt-5 space-x-1 relative">
+        {username?.username ? (
           <img
-            src={username?.profiles.avatar_url}
+            src={username?.avatar_url}
             alt="profile"
             className={`md:w-[15em] w-[10em] h-[10em] md:h-[15em] aspect-auto rounded-2xl`}
           />
@@ -83,7 +81,7 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
         <div className="flex gap-4 relative justify-between">
           {isEditName ? (
             <input
-              className="text-zinc-100 bg-transparent py-1 px-1 focus:outline-none font-NovaSquare font-semibold border-[0.5px] border-zinc-700 rounded-md text-xs md:text-[1em]"
+              className="w-[15em] md:w-[20em] text-zinc-100 bg-transparent py-1 px-1 focus:outline-none font-NovaSquare font-semibold border-[0.5px] border-zinc-700 rounded-md text-xs md:text-[1em]"
               type="text"
               value={newUserName}
               onChange={(e) => setNewUserName(e.target.value)}
@@ -91,7 +89,7 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
             />
           ) : (
             <h1 className="mb-5 text-zinc-50 text-sm md:text-md font-bold font-NovaSquare">
-              {username?.profiles.username}
+              {username?.username}
             </h1>
           )}
 

@@ -38,7 +38,7 @@ function ModalWindow({ children, name }) {
   if (isOpen !== name) return null;
 
   return createPortal(
-    <div className="inset-0 bg-zinc-800/20 backdrop-blur-sm fixed flex justify-center items-center">
+    <div className="inset-0 bg-zinc-800/20 backdrop-blur-sm fixed flex justify-center items-center z-50">
       <div
         ref={ref}
         className="text-zinc-50 bg-zinc-100/50 flex justify-center items-center rounded-lg relative"

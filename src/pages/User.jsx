@@ -29,7 +29,7 @@ function User() {
 
   useEffect(() => {
     if (users) {
-      searchParams.set("", users?.[0]?.profiles.username);
+      searchParams.set("name", `${users?.currentUser?.full_name}`);
       setSearcParams(searchParams);
     }
   }, [users, setSearcParams, searchParams]);

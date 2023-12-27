@@ -31,12 +31,12 @@ export async function getCurrentUser() {
 }
 
 //* sign Up
-export async function signUp({ email, password, full_name }) {
+export async function signUp({ email, password, full_name, avatar_url }) {
   const { data: user, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      data: { full_name, avatar_url: "" },
+      data: { full_name, avatar_url: avatar_url || "" },
       emailRedirectTo: "https://localhost:5173/login",
     },
   });
@@ -47,13 +47,17 @@ export async function signUp({ email, password, full_name }) {
   return user.user;
 }
 
-//* Insert users into profiles
-// export async function insertUser({ user_id, username }) {
-//   const { data } = await supabase
-//     .from("profiles")
-//     .insert({ id: user_id, username, avatar_url: "" });
-//   return data;
-// }
+//* update user
+export async function updateUser({ full_name, avatar_url }) {
+  console.log(full_name);
+  const { error } = await supabase.auth.updateUser({
+    data: {
+      full_name: full_name,
+      avatar_url: avatar_url || "",
+    },
+  });
+  if (error) throw new Error(error.message);
+}
 
 //*Login
 export async function login({ email, password }) {
@@ -65,15 +69,15 @@ export async function login({ email, password }) {
   return data;
 }
 
-//* SIGN UP WITH EMAIL AND PASSWORD
-export async function SignUpWithEmailandPass(email, password) {
-  let { data, error } = await supabase.auth.signUp({
-    email: email,
-    password: password,
-  });
-  if (error) throw new Error(error.message);
-  return data;
-}
+// //* SIGN UP WITH EMAIL AND PASSWORD
+// export async function SignUpWithEmailandPass(email, password) {
+//   let { data, error } = await supabase.auth.signUp({
+//     email: email,
+//     password: password,
+//   });
+//   if (error) throw new Error(error.message);
+//   return data;
+// }
 
 //* INSERT POSTS
 export async function insertPosts(post) {
@@ -139,7 +143,6 @@ export async function loadUserDetails() {
     .select()
     .eq("id", userInfo.id)
     .single();
-
   if (error) throw new Error(error.message);
   return { postsAndLikes, currentUser };
 }
@@ -191,28 +194,28 @@ export async function unlikePost(id, user_id) {
 }
 
 //*UPDATE PROFILE PICTURE
-export async function updateAvatar(newImage, id) {
-  console.log(id, newImage);
-  const image = newImage.name.replaceAll("-", "_");
-  const imagePath = `${supabaseUrl}/storage/v1/object/public/avatars/${image}`;
+// export async function updateAvatar(newImage, id) {
+//   console.log(id, newImage);
+//   const image = newImage.name.replaceAll("-", "_");
+//   const imagePath = `${supabaseUrl}/storage/v1/object/public/avatars/${image}`;
 
-  const { data, error } = await supabase
-    .from("profiles")
-    .update({ avatar_url: imagePath })
-    .eq("id", id)
-    .single();
-  console.log(data);
-  if (error) return;
+//   const { data, error } = await supabase
+//     .from("profiles")
+//     .update({ avatar_url: imagePath })
+//     .eq("id", id)
+//     .single();
+//   console.log(data);
+//   if (error) return;
 
-  const { data: photo, error: uploadError } = await supabase.storage
-    .from("avatars")
-    .upload(image, newImage, {
-      cacheControl: "3600",
-      upsert: false,
-    });
-  console.log(photo, uploadError, data);
-  return data;
-}
+//   const { data: photo, error: uploadError } = await supabase.storage
+//     .from("avatars")
+//     .upload(image, newImage, {
+//       cacheControl: "3600",
+//       upsert: false,
+//     });
+//   console.log(photo, uploadError, data);
+//   return data;
+// }
 
 //*FETCHfOREIGH USER
 export async function foreignUser(user_id) {
@@ -240,16 +243,16 @@ export async function getComments(postId) {
 
 //* change username
 
-export async function changeUsername(newName, user_id) {
-  console.log(newName, user_id);
-  const { error } = await supabase
-    .from("profiles")
-    .update({ username: newName })
-    .eq("id", user_id)
-    .select();
+// export async function changeUsername(newName, user_id) {
+//   console.log(newName, user_id);
+//   const { error } = await supabase
+//     .from("profiles")
+//     .update({ username: newName })
+//     .eq("id", user_id)
+//     .select();
 
-  if (error) throw new Error(error.message);
-}
+//   if (error) throw new Error(error.message);
+// }
 
 //* ADD COMMENT
 export async function addComment(content, postid, userid) {

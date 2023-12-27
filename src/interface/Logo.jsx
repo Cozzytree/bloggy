@@ -1,4 +1,4 @@
-import image from "./../../public/bloggy.png";
+import image from "./../Assets/bloggy.png";
 
 function Logo() {
   return (

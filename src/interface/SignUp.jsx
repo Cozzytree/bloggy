@@ -21,7 +21,7 @@ function SignUp() {
 
   function onSubmit(data) {
     console.log(data);
-    signUp(data);
+    signUp({ ...data, avatar_url: photo || "" });
   }
 
   return (
@@ -102,8 +102,9 @@ function SignUp() {
             onChange={(e) => setPhoto(e.target.files[0])}
           />
         </span>
-
-        <Button type="small">Sign Up</Button>
+        <Button disabled={isPending} type="small">
+          Sign Up
+        </Button>
       </form>
     </div>
   );

@@ -25,12 +25,12 @@ function SignUp() {
   }
 
   return (
-    <div className="flex flex-col justify-center pb-5 text-md min-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] border-[1px] border-lime-400/60 rounded-md bg-zinc-700/50 font-NovaSquare text-zinc-50 transition-all duration-150 relative slowAndSteady">
-      <h1 className="w-[100%] text-center py-3 text-lime-950 bg-lime-500 md:text-2xl text-xl tracking-wider font-extrabold rounded-md">
+    <div className="flex flex-col justify-center pb-5 text-md max-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] border-[1px] border-lime-400/60 rounded-md bg-zinc-700/50 font-NovaSquare text-zinc-50 transition-all duration-150 relative slowAndSteady">
+      <h1 className="w-[100%] text-center py-5 text-lime-950 bg-lime-500 md:text-2xl text-sm tracking-wider font-bold rounded-md">
         Sign Up
       </h1>
 
-      <form className="space-y-5 p-4" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-3 p-2" onSubmit={handleSubmit(onSubmit)}>
         <FormRow
           label="Username"
           logo={<FaUser />}

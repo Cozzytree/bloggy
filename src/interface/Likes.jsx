@@ -28,7 +28,7 @@ function Likes({ length, liked, addLike, removeLike, isProcessing }) {
             )) || <AiOutlineLike size={15} />}
         </Button>
 
-        <span className="text-[0.65em] md:text-md">
+        <span className="text-[0.65em] md:text-md tracking-wide whitespace-nowrap">
           {liked &&
             (length === 1
               ? "You liked the post"

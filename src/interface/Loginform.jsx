@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import { FaUnlock } from "react-icons/fa";
-import { useSignUp } from "../hooks/Users/useSignUp";
 import Spinner from "./Spinner";
 import toast from "react-hot-toast";
 import FormRow from "./FormRow";
@@ -13,7 +12,6 @@ const inputStyle =
   "border-[1px] w-[15em] sm:w-[18em] border-stone-900 px-5 py-1 rounded-xl outline-none border-lime-300 text-zinc-100 bg-transparent border-t-transparent border-l-transparent border-r-transparent text-sm tracking-widest";
 
 function Form() {
-  const { SignUpWithEmailandPass, SignUpError, loadingSignUp } = useSignUp();
   const { fetchLogin, loadingLogin, loginError, login, isLogging } = useLogin();
 
   const [email, setEmail] = useState("");

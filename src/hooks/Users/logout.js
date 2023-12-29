@@ -14,7 +14,7 @@ export function useLogout() {
     mutationFn: logOut,
     onSuccess: () => {
       navigate("/login");
-      queryClient.removeQueries();
+      queryClient.clear();
     },
     onError: () => {
       toast.error(error.message);

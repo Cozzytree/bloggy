@@ -4,20 +4,35 @@ import Spinner from "../interface/Spinner";
 import Logo from "../interface/Logo";
 import { PostsItem } from "../interface/Posts";
 import ErrorWindow from "../interface/ErrorWindow";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 function UsersPosts() {
-  const { loadingPosts, allPosts, postsError } = useAllposts();
-  if (postsError) return <ErrorWindow>{postsError}</ErrorWindow>;
+  const { loadingPosts, pages, postsError, fetchNextPage, hasNextPage } =
+    useAllposts();
 
+  const allPages =
+    pages?.pages?.reduce((acc, curr) => {
+      return [...acc, ...curr.postsAndLikes];
+    }, []) || [];
+  if (postsError) return <ErrorWindow>{postsError}</ErrorWindow>;
   return (
     <>
       <Logo />
+      <InfiniteScroll
+        dataLength={allPages ? allPages.length : 0}
+        hasMore={hasNextPage}
+        next={() => {
+          fetchNextPage();
+        }}
+        loader={loadingPosts}
+      />
       {loadingPosts && <Spinner />}
       <ul className="list-none space-y-4">
-        {allPosts?.map((post) => (
-          <PostsItem key={post.id} posts={post} likes={allPosts.likes} />
+        {allPages.map((post) => (
+          <PostsItem key={post.id} posts={post} likes={post.likes} />
         ))}
       </ul>
+
       <Navigation />
     </>
   );

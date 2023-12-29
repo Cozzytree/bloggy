@@ -1,4 +1,5 @@
 import supabase, { supabaseUrl } from "./supabase";
+import { PAGE_SIZE } from "../utils/consts";
 
 //* Function to match like and post
 async function matchLikeandPost(post) {
@@ -49,14 +50,28 @@ export async function signUp({ email, password, full_name, avatar_url }) {
 
 //* update user
 export async function updateUser({ full_name, avatar_url }) {
-  console.log(full_name);
+  const fileName = avatar_url.name;
+  const fileUrl = avatar_url
+    ? `${supabaseUrl}/storage/v1/object/public/avatars/${avatar_url.name}`.replaceAll(
+        "-",
+        "_"
+      )
+    : "";
+
   const { error } = await supabase.auth.updateUser({
     data: {
       full_name: full_name,
-      avatar_url: avatar_url || "",
+      avatar_url: fileUrl,
     },
   });
-  if (error) throw new Error(error.message);
+  if (!avatar_url) return;
+
+  const { error: uploaderror } = await supabase.storage
+    .from("avatars")
+    .upload(fileName, avatar_url);
+
+  if (error || uploaderror)
+    throw new Error(error.message || uploaderror.message);
 }
 
 //*Login
@@ -155,22 +170,25 @@ export async function deletePosts(id) {
 
 //* GET ALL POSTS
 export async function getAllPosts({ pageParam = 0 }) {
-  const start = pageParam * 10;
-  const end = pageParam * 10 + 10;
+  const start = pageParam * PAGE_SIZE;
+  const end = start + PAGE_SIZE - 1;
   const activeUser = JSON.parse(
     localStorage.getItem("sb-vozbqbvaultodqeuimqv-auth-token")
   );
   const activeUserId = activeUser.user.id;
-  const { data: posts, error } = await supabase
+  const {
+    data: posts,
+    error,
+    count,
+  } = await supabase
     .from("posts")
-    .select("*, profiles(username)")
+    .select("*, profiles(username)", { count: "exact" })
     .neq("user_id", activeUserId)
     .range(start, end);
 
   const postsAndLikes = await matchLikeandPost(posts);
-
   if (error) throw new Error(error.message);
-  return postsAndLikes;
+  return { postsAndLikes, pageoffset: pageParam, count };
 }
 
 //* LIKE POST

@@ -58,14 +58,14 @@ export function PostsItem({ posts, type }) {
       document.addEventListener("touchend", onTouchEnd);
     }
 
-    posts?.image.forEach(() => {
+    posts?.image?.forEach(() => {
       document
         .querySelector(`.swipe-${posts.id}`)
         .addEventListener("touchstart", handleSwipe);
     });
 
     return () => {
-      posts?.image.forEach(() => {
+      posts?.image?.forEach(() => {
         const element = document.querySelector(`.swipe-${posts.id}`);
         if (element) {
           element.removeEventListener("touchstart", handleSwipe);
@@ -119,33 +119,36 @@ export function PostsItem({ posts, type }) {
 
       {posts?.image.length ? (
         <div className="relative w-[100%] h-auto flex justify-center flex-col items-center gap-3">
-          {!isLoadedImage && <div className="image-loader h-[20em]"></div>}
-
-          <img
-            src={posts?.image[currentImage]}
-            key={Math.random() * 1000}
-            alt=""
-            className={`w-[300px] h-[350px] md:w-auto md:h-autorounded-lg slowAndSteady object-cover swipe-${posts.id} float-left`}
-            onLoad={() => handleLoadedImage()}
-          />
-
-          <div className="flex space-center slowAndSteady items-center h-5">
-            {posts.image.map((dot, i) => (
-              <span key={i}>
-                {posts.image.length > 1 && (
-                  <GoDotFill
-                    fill="white"
-                    key={Math.random() * 1000}
-                    size={currentImage === i ? 12 : 10}
-                    onClick={() => setCurrentImage(i)}
-                    className={`${
-                      currentImage === i ? "opacity-100" : "opacity-50"
-                    } cursor-pointer`}
-                  />
-                )}
-              </span>
-            ))}
-          </div>
+          <>
+            <img
+              src={posts?.image[currentImage]}
+              key={Math.random() * 1000}
+              alt=""
+              className={`w-[300px] h-[350px] md:w-auto md:h-autorounded-lg slowAndSteady object-cover swipe-${
+                posts.id
+              } float-left ${
+                isLoadedImage ? "backdrop-blur-0" : "backdrop-blur-xl"
+              }`}
+              onLoad={() => handleLoadedImage()}
+            />
+            <div className="flex space-center slowAndSteady items-center h-5">
+              {posts.image.map((dot, i) => (
+                <span key={i}>
+                  {posts.image.length > 1 && (
+                    <GoDotFill
+                      fill="white"
+                      key={Math.random() * 1000}
+                      size={currentImage === i ? 12 : 10}
+                      onClick={() => setCurrentImage(i)}
+                      className={`${
+                        currentImage === i ? "opacity-100" : "opacity-50"
+                      } cursor-pointer`}
+                    />
+                  )}
+                </span>
+              ))}
+            </div>
+          </>
         </div>
       ) : null}
 

@@ -127,7 +127,7 @@
 
 .customfileButton::before {
   font-family: novaSquare, sans-serif;
-  content: "choose an avatar";
+  content: "choose an avatar 👆";
   display: inline-block;
   color: whitesmoke;
   border-radius: 3px;

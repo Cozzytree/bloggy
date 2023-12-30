@@ -121,8 +121,8 @@ export async function insertPosts(post) {
       image: [...imagePath],
     })
     .single();
-  console.log(data, error);
 
+  if (error) throw new Error(error.message);
   if (post?.formData?.imageFile === "") return data;
 
   for (let j = 0; j < imageArray.length; j++) {
@@ -131,7 +131,7 @@ export async function insertPosts(post) {
       .upload(imageArray[j].name, imageArray[j]);
 
     if (error) {
-      throw new Error("something went wrong");
+      throw new Error(error.message);
     }
   }
 
@@ -139,17 +139,25 @@ export async function insertPosts(post) {
 }
 
 //* LOAD USER DETAILS
-export async function loadUserDetails() {
+export async function loadUserDetails({ pageParam = 0 }) {
+  const start = pageParam * PAGE_SIZE;
+  const end = start + PAGE_SIZE - 1;
+
   const {
     data: { user: userInfo },
   } = await supabase.auth.getUser();
 
   if (!userInfo) return;
 
-  let { data: posts, error } = await supabase
+  let {
+    data: posts,
+    error,
+    count,
+  } = await supabase
     .from("posts")
-    .select("*, profiles(username, avatar_url)")
-    .eq("user_id", userInfo.id);
+    .select("*, profiles(username, avatar_url)", { count: "exact" })
+    .eq("user_id", userInfo.id)
+    .range(start, end);
 
   const postsAndLikes = await matchLikeandPost(posts);
 
@@ -159,7 +167,7 @@ export async function loadUserDetails() {
     .eq("id", userInfo.id)
     .single();
   if (error) throw new Error(error.message);
-  return { postsAndLikes, currentUser };
+  return { postsAndLikes, currentUser, count, pageOffset: pageParam };
 }
 
 //* DELETE POSTS

@@ -17,19 +17,25 @@ import AreYouSureWindow from "../interface/AreYouSureWindow";
 import Navigation from "../interface/Navigation";
 import FormAddPost from "../interface/FormAddPost";
 import Column from "../interface/Column";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 function User() {
   const navigate = useNavigate();
   const [isPosts, setIsPosts] = useState(true);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const { userLogout, isLoggingOut } = useLogout();
-  const { loadingUsers, users } = useUser();
+  const { loadingUsers, users, hasNextPage, fetchNextPage } = useUser();
   const { addPosts, isLoadingAddPosts } = useInsert();
   const [searchParams, setSearcParams] = useSearchParams();
 
+  const allPages =
+    users?.pages?.reduce((acc, curr) => {
+      return [...acc, ...curr.postsAndLikes];
+    }, []) || [];
+
   useEffect(() => {
     if (users) {
-      searchParams.set("name", `${users?.currentUser?.full_name}`);
+      searchParams.set("name", `${users?.pages[0]?.currentUser?.full_name}`);
       setSearcParams(searchParams);
     }
   }, [users, setSearcParams, searchParams]);
@@ -79,14 +85,21 @@ function User() {
       <UserProfileUI
         isPosts={isPosts}
         setIsPosts={setIsPosts}
-        username={users?.currentUser}
+        username={users?.pages[0]?.currentUser}
       />
 
       <FormAddPost addPosts={addPosts} isLoading={isLoadingAddPosts} />
-
+      <InfiniteScroll
+        dataLength={allPages ? allPages.length : 0}
+        hasMore={hasNextPage}
+        next={() => {
+          fetchNextPage();
+        }}
+        loader={<div>loading...</div>}
+      />
       {isPosts ? (
         <Posts
-          data={users?.postsAndLikes}
+          data={allPages}
           render={(post) => (
             <PostsItem key={post.id} posts={post} type="ownAccount" />
           )}

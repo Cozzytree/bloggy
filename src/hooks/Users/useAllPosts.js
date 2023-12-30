@@ -13,7 +13,8 @@ function useAllposts() {
     queryKey: ["allPosts"],
     queryFn: getAllPosts,
     getNextPageParam: (lastPage) => {
-      if (lastPage.pageoffset * PAGE_SIZE + PAGE_SIZE - 1 > lastPage.count) {
+      const totalPage = Math.floor(lastPage?.count / PAGE_SIZE);
+      if (totalPage >= lastPage?.pageoffset) {
         return null;
       }
 

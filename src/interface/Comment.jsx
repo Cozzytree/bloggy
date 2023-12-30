@@ -19,7 +19,7 @@ function Comment() {
     );
 
   return (
-    <ul className="w-[100%] flex justify-center p-3 text-zinc-100 font-NovaSquare list-none py-8 border-t-[0.5px] border-t-zinc-500 flex-col items-center">
+    <ul className="w-[100%] flex justify-center p-3 text-zinc-100 font-NovaSquare list-none py-8 border-t-[0.5px] border-t-zinc-500 flex-col items-center slowAndSteady">
       {comments.map((comment) => (
         <CommentsItem key={comment.post_id} comment={comment} />
       ))}

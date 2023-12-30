@@ -7,7 +7,7 @@ import Button from "./Button";
 import { useState } from "react";
 
 const inputStyle =
-  "border-[1px] w-[100%] border-stone-900 px-5 py-1 rounded-xl outline-none border-lime-300 text-zinc-100 bg-transparent border-t-transparent border-l-transparent border-r-transparent text-sm tracking-widest";
+  "w-[15em] sm:w-[18em] px-5 py-1 rounded-xl text-zinc-900 dark:text-zinc-100 bg-transparent text-sm tracking-wide outline-none";
 
 function SignUp() {
   const { isPending, signUp } = useSignUp();
@@ -25,15 +25,15 @@ function SignUp() {
   }
 
   return (
-    <div className="flex flex-col justify-center pb-5 text-md max-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] border-[1px] border-lime-400/60 rounded-md bg-zinc-700/50 font-NovaSquare text-zinc-50 transition-all duration-150 relative slowAndSteady">
-      <h1 className="w-[100%] text-center py-5 text-lime-950 bg-lime-500 md:text-2xl text-sm tracking-wider font-bold rounded-md">
+    <div className="flex flex-col justify-center pb-5 text-md max-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] border-[0.5px] border-lime-400/60 rounded-md dark:bg-zinc-700/50 font-NovaSquare text-zinc-50 transition-all duration-500 relative slowAndSteady dark:text-zinc-50">
+      <h1 className="w-[100%] text-center py-3 text-lime-900 md:text-3xl text-xl tracking-tight font-black rounded-md dark:bg-lime-400">
         Sign Up
       </h1>
 
       <form className="space-y-3 p-2" onSubmit={handleSubmit(onSubmit)}>
         <FormRow
           label="Username"
-          logo={<FaUser />}
+          logo={<FaUser fill="green" />}
           errors={errors?.username?.message}
         >
           <input
@@ -47,7 +47,7 @@ function SignUp() {
 
         <FormRow
           label="Email"
-          logo={<MdEmail />}
+          logo={<MdEmail fill="green" />}
           errors={errors?.email?.message}
         >
           <input
@@ -66,7 +66,7 @@ function SignUp() {
         </FormRow>
         <FormRow
           label="Password"
-          logo={<FaUnlock />}
+          logo={<FaUnlock fill="green" />}
           errors={errors?.password?.message}
         >
           <input
@@ -79,7 +79,7 @@ function SignUp() {
         </FormRow>
         <FormRow
           label="Confirm Password"
-          logo={<FaUnlock />}
+          logo={<FaUnlock fill="green" />}
           errors={errors?.confirmPassword?.message}
         >
           <input
@@ -94,15 +94,15 @@ function SignUp() {
             })}
           />
         </FormRow>
-        <span className="flex text-sm w-[100%] gap-2">
-          Photo?{" "}
+        <span className="flex md:text-sm w-[100%] gap-2 px-3 text-xs items-center">
+          Photo?
           <input
             type="file"
-            className="text-zinc-100"
+            className="text-zinc-100 customfileButton"
             onChange={(e) => setPhoto(e.target.files[0])}
           />
         </span>
-        <Button disabled={isPending} type="small">
+        <Button disabled={isPending} type="small" className="float-right">
           Sign Up
         </Button>
       </form>

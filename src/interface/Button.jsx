@@ -16,7 +16,7 @@ function Button({ type, children, onClick, className, disabled, onMouseDown }) {
     return (
       <button
         onClick={onClick}
-        className={`${buttonCss} text-sm h-8 w-[7em] ${className}`}
+        className={`${buttonCss} text-[0.8em] h-8 w-[5em] ${className}`}
       >
         {children}
       </button>

@@ -24,7 +24,7 @@ function UsersPosts() {
         next={() => {
           fetchNextPage();
         }}
-        loader={loadingPosts}
+        loader={<div>loading...</div>}
       />
       {loadingPosts && <Spinner />}
       <ul className="list-none space-y-4">

@@ -1,8 +1,7 @@
 import { useState } from "react";
-import ImageView from "./ImageView";
 
 function ImageGallery({ data }) {
-  const imageArray = data?.postsAndLikes?.map((ele) => ele.image);
+  const imageArray = data?.pages[0]?.postsAndLikes?.map((ele) => ele.image);
   const allImages = [].concat(...imageArray.filter(Boolean));
 
   return (
@@ -16,14 +15,10 @@ function ImageGallery({ data }) {
 
 export function ImageItem({ data }) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [currentActive, setCurrentActive] = useState("");
 
   return (
     <>
-      <li
-        className="relative h-autop-2 p-[2px] rounded-sm transition-all duration-150 cursor-pointer hoverImage flex justify-center"
-        onClick={() => setCurrentActive(data)}
-      >
+      <li className="relative h-autop-2 p-[2px] rounded-sm transition-all duration-150 cursor-pointer hoverImage flex justify-center">
         {!isImageLoaded && <div className="image-loader"></div>}
         <img
           className={`rounded-md w-[150px] h-[140px] sm:w-[200px] sm:h-[200px] md:h-[250px] md:w-[250px] object-cover`}
@@ -32,9 +27,6 @@ export function ImageItem({ data }) {
           onLoad={() => setIsImageLoaded(true)}
         />
       </li>
-      {currentActive && (
-        <ImageView url={currentActive} collapse={() => setCurrentActive("")} />
-      )}
     </>
   );
 }

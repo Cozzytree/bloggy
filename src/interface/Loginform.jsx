@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import FormRow from "./FormRow";
 
 const inputStyle =
-  "border-[1px] w-[15em] sm:w-[18em] border-stone-900 px-5 py-1 rounded-xl outline-none border-lime-300 text-zinc-100 bg-transparent border-t-transparent border-l-transparent border-r-transparent text-sm tracking-widest";
+  "w-[15em] sm:w-[18em] px-5 py-1 rounded-xl text-zinc-900 dark:text-zinc-100 bg-transparent text-sm tracking-wide";
 
 function Form() {
   const { fetchLogin, loadingLogin, loginError, login, isLogging } = useLogin();
@@ -34,14 +34,14 @@ function Form() {
   }
 
   return (
-    <div className="flex flex-col justify-center gap-4 pb-5 text-md max-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] border-[1px] border-lime-400/60 rounded-md bg-zinc-700/50 font-NovaSquare text-zinc-50 items-center transition-all duration-150 relative slowAndSteady">
+    <div className="flex flex-col justify-center gap-4 pb-5 text-md max-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] border-[1px] dark:bg-zinc-700/50 border-lime-700/10 rounded-md font-NovaSquare text-zinc-900 dark:text-zinc-50 items-center transition-all duration-150 relative slowAndSteady">
       {(loadingLogin || isLogging) && <Spinner />}
 
-      <h1 className="w-[100%] text-center py-3 text-lime-950 bg-lime-500 md:text-2xl text-sm tracking-wider font-bold rounded-md">
+      <h1 className="w-[100%] text-center py-3 text-lime-900 md:text-3xl text-xl tracking-tight font-black rounded-md dark:bg-lime-400">
         Log In
       </h1>
       <form className="space-y-5 p-4" onSubmit={handleLogin}>
-        <FormRow label="Email" logo={<MdEmail fill="silver" />}>
+        <FormRow label="Email" logo={<MdEmail fill="green" />}>
           <input
             type="email"
             value={email}
@@ -52,7 +52,7 @@ function Form() {
           />
         </FormRow>
 
-        <FormRow label="Password" logo={<FaUnlock fill="silver" />}>
+        <FormRow label="Password" logo={<FaUnlock fill="green" />}>
           <input
             type="password"
             placeholder="password"
@@ -63,21 +63,23 @@ function Form() {
           />
         </FormRow>
 
-        <span
-          className="text-xs text-sky-400 right-0 bottom-[-80%] cursor-pointer"
+        <p
+          className="text-xs w-[100%] text-sky-900 dark:text-sky-300 text-center cursor-pointer"
           onClick={() => naviagate("/password_recovery")}
         >
-          forgot password
-        </span>
+          forgot password?
+        </p>
 
-        <div className="flex gap-4 items-center sm:flex-row flex-col mt-4">
+        <div className="flex gap-4 items-center flex-col mt-4">
+          <Button type="small" className="w-[100%]">
+            Log In
+          </Button>
           <Button type="secondary">Login with email</Button>
-          <Button type="small">Log In</Button>
         </div>
       </form>
       <span
         onClick={() => naviagate("/signup")}
-        className="text-sm text-lime-200 cursor-pointer"
+        className="text-sm font-bold cursor-pointer"
       >
         Don&apos;t have an account signUp
       </span>

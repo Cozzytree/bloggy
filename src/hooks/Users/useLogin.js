@@ -17,7 +17,7 @@ export function useLogin() {
       let { data, error } = await supabase.auth.signInWithOtp({
         email: email,
         options: {
-          emailRedirectTo: "https://localhost:5173/user",
+          emailRedirectTo: "https://blogggyy.netlify.app/user",
         },
       });
 

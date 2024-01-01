@@ -9,11 +9,12 @@ export function useUser() {
     error,
     hasNextPage,
     fetchNextPage,
+    isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["users"],
     queryFn: loadUserDetails,
     getNextPageParam: (lastPage) => {
-      const totalPage = Math.floor(lastPage.count / PAGE_SIZE);
+      const totalPage = Math.floor(lastPage?.count / PAGE_SIZE);
 
       if (totalPage >= lastPage?.pageOffset) {
         return null;
@@ -23,5 +24,12 @@ export function useUser() {
     },
   });
 
-  return { loadingUsers, error, users, fetchNextPage, hasNextPage };
+  return {
+    loadingUsers,
+    error,
+    users,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  };
 }

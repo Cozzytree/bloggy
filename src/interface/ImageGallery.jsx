@@ -5,7 +5,7 @@ function ImageGallery({ data }) {
   const allImages = [].concat(...imageArray.filter(Boolean));
 
   return (
-    <ul className="grid grid-cols-[1fr_1fr_1fr] md:w-[55vw] w-[90vw] pb-[10em] bg-zinc-700/50 rounded-md my-4 list-none p-1">
+    <ul className="grid grid-cols-[1fr_1fr_1fr] md:w-[55vw] w-[90vw] pb-[10em] bg-zinc-900/50 rounded-md my-4 list-none p-1">
       {allImages.map((img, i) => (
         <ImageItem data={img} key={i} />
       ))}

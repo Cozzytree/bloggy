@@ -49,7 +49,7 @@ export async function signUp({ email, password, full_name, avatar_url }) {
 }
 
 //* update user
-export async function updateUser({ full_name, avatar_url }) {
+export async function updateUser({ full_name, avatar_url, id }) {
   const fileName = avatar_url.name;
   const fileUrl = avatar_url
     ? `${supabaseUrl}/storage/v1/object/public/avatars/${avatar_url.name}`.replaceAll(
@@ -64,6 +64,8 @@ export async function updateUser({ full_name, avatar_url }) {
       avatar_url: fileUrl,
     },
   });
+
+  await supabase.from("profiles").update({ full_name }).eq("id", id);
   if (!avatar_url) return;
 
   const { error: uploaderror } = await supabase.storage

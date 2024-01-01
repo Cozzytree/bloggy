@@ -14,7 +14,7 @@ function Settings() {
 
   function handleUpdate(e) {
     e.preventDefault();
-    if (name === data?.user_metadata?.full_name || !file) return;
+    if (name === data?.user_metadata?.full_name && !file) return;
     userUpdate({ full_name: name, avatar_url: file || "" });
   }
 

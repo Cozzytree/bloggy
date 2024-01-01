@@ -18,13 +18,20 @@ import Navigation from "../interface/Navigation";
 import FormAddPost from "../interface/FormAddPost";
 import Column from "../interface/Column";
 import InfiniteScroll from "react-infinite-scroll-component";
+import MiniSpinner from "../interface/MiniSpinner";
 
 function User() {
   const navigate = useNavigate();
   const [isPosts, setIsPosts] = useState(true);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const { userLogout, isLoggingOut } = useLogout();
-  const { loadingUsers, users, hasNextPage, fetchNextPage } = useUser();
+  const {
+    loadingUsers,
+    users,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useUser();
   const { addPosts, isLoadingAddPosts } = useInsert();
   const [searchParams, setSearcParams] = useSearchParams();
 
@@ -107,6 +114,7 @@ function User() {
       ) : (
         <ImageGallery data={users} />
       )}
+      {isFetchingNextPage && <MiniSpinner width={10} height={10} />}
       <Navigation />
     </>
   );

@@ -102,7 +102,7 @@ function User() {
         next={() => {
           fetchNextPage();
         }}
-        loader={<div>loading...</div>}
+        // loader={<div>loading...</div>}
       />
       {isPosts ? (
         <Posts

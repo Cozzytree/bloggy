@@ -7,7 +7,6 @@ import CommentForm from "./CommentForm";
 
 function Comment() {
   const { comments, isLoadingComments } = useComments();
-
   if (isLoadingComments) return <Spinner />;
   if (!comments.length)
     return (
@@ -19,9 +18,9 @@ function Comment() {
     );
 
   return (
-    <ul className="w-[100%] flex justify-center p-3 text-zinc-100 font-NovaSquare list-none py-8 border-t-[0.5px] border-t-zinc-500 flex-col items-center slowAndSteady">
+    <ul className="w-[100%] flex justify-center p-3 text-zinc-100 font-NovaSquare list-none py-8 border-t-[0.5px] border-t-zinc-500 flex-col items-center slowAndSteady gap-2">
       {comments.map((comment) => (
-        <CommentsItem key={comment.post_id} comment={comment} />
+        <CommentsItem key={comment?.id} comment={comment} />
       ))}
       <BackButton className="absolute right-[2%] top-10 md:right-[20%] text-xs space-x-3" />
       <CommentForm />

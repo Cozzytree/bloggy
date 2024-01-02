@@ -21,7 +21,7 @@ function SendRecovery() {
       <Logo />
       <form
         onSubmit={handleRecover}
-        className="text-zinc-50 font-NovaSquare flex flex-col items-center mt-[5em] gap-[1em] dark:bg-zinc-800/50 bg-zinc-200 py-5 px-5 rounded-md shadow-md shadow-zinc-700/30"
+        className="text-zinc-50 font-NovaSquare flex flex-col items-center mt-[5em] gap-[1em] dark:bg-zinc-700/50 bg-zinc-200 py-5 px-5 rounded-md shadow-md shadow-zinc-700/30"
       >
         <h1 className="w-[100%] text-center py-3 text-lime-900 md:text-2xl text-xl tracking-tight font-black rounded-md dark:bg-lime-400">
           Enter your Email

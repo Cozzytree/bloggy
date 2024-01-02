@@ -16,7 +16,7 @@ export function useUser() {
     getNextPageParam: (lastPage) => {
       const totalPage = Math.floor(lastPage?.count / PAGE_SIZE);
 
-      if (totalPage >= lastPage?.pageOffset) {
+      if (lastPage?.pageOffset >= totalPage) {
         return null;
       }
 

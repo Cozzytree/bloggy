@@ -23,7 +23,6 @@ function PostOptions({ deleting, deletePost }) {
                   type="danger"
                   disabled={deleting}
                   onClick={() => {
-                    console.log("clicked");
                     deletePost();
                   }}
                 >

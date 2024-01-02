@@ -1,4 +1,4 @@
-function MiniSpinner({ width, height }) {
+function MiniSpinner({ width = 6, height = 6 }) {
   return (
     <div className="w-10 h-10 relative">
       <div

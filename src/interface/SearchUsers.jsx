@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import { useSearch } from "./../hooks/Users/useSearchUsers";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import ErrorWindow from "./ErrorWindow";
 
 function SearchUsers() {
   const [username, setName] = useState("");
-  const { isLoading, searchResults, searchUsers, searchError } = useSearch();
+  const { isPending, search, searchResults, error } = useSearch();
 
   useEffect(() => {
     let delayInputTimeoutId;
     if (username.length > 2) {
       delayInputTimeoutId = setTimeout(() => {
-        searchUsers(username);
-      }, 1500);
+        search(username);
+      }, 1000);
     }
 
     return () => clearTimeout(delayInputTimeoutId);
-  }, [username, searchUsers]);
+  }, [username, search]);
 
   return (
     <>
@@ -32,7 +33,11 @@ function SearchUsers() {
       {searchResults?.map((user) => (
         <SearchResults data={user} key={user.id} />
       ))}
-      {searchError && <p>{searchError}</p>}
+      {isPending ? (
+        <p>Loading...</p>
+      ) : (
+        error && <ErrorWindow>no records!</ErrorWindow>
+      )}
     </>
   );
 }

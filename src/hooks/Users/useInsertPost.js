@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { insertPosts } from "../../supabase/supabaseAPI";
+// import { insertPosts } from "../../supabase/supabaseAPI";
+import services from "../../supabase/supabase.services";
 import toast from "react-hot-toast";
 
 export function useInsert() {
+  const insertPosts = services.insertPost;
   const queryClient = useQueryClient();
 
   const {

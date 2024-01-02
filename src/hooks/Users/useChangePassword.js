@@ -1,21 +1,24 @@
 import toast from "react-hot-toast";
-import supabase from "../../supabase/supabase";
-import { useState } from "react";
+import authService from "../../supabase/supabase.auth";
+
+import { useMutation } from "@tanstack/react-query";
 
 export function useChangePassword() {
-  const [err, setError] = useState("");
-  async function resetPassword(password) {
-    try {
-      setError("");
-      const { error } = await supabase.auth.updateUser({ password: password });
-      if (error) {
-        setError(error.message);
-        toast.error(error.message);
-      }
-    } catch (err) {
-      setError(err.message);
-    }
-  }
+  const { changePassword } = authService;
 
-  return { resetPassword, err };
+  const {
+    error,
+    isPending,
+    mutate: updatePassword,
+  } = useMutation({
+    mutationFn: changePassword,
+    onSuccess: () => {
+      toast.success("password updated successfullt");
+    },
+    onError: () => {
+      toast.error(error.message);
+    },
+  });
+
+  return { isPending, updatePassword, error };
 }

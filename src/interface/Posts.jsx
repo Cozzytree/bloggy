@@ -88,7 +88,6 @@ export function PostsItem({ posts, type }) {
   function handleNavigate(id) {
     navigate(`/comments/${id}`);
   }
-
   return (
     <li
       className={`${
@@ -98,7 +97,7 @@ export function PostsItem({ posts, type }) {
       <div className="flex justify-between">
         <div className="flex flex-col">
           <h1 className="text-sm text-lime-100 text-md font-medium">
-            {profiles?.username}
+            {profiles?.full_name}
           </h1>
           <span className="text-[0.6em] text-zinc-400">
             {Intl.DateTimeFormat("en", {

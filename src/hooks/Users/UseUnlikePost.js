@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { unlikePost } from "../../supabase/supabaseAPI";
+// import { unlikePost } from "../../supabase/supabaseAPI";
+import services from "../../supabase/supabase.services";
 
 export function useUnlikePost() {
+  const { unlikePost } = services;
   const queryClient = useQueryClient();
 
   const { mutate: removeLike, isPending: isUnliking } = useMutation({

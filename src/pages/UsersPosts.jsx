@@ -21,6 +21,7 @@ function UsersPosts() {
     pages?.pages?.reduce((acc, curr) => {
       return [...acc, ...curr.postsAndLikes];
     }, []) || [];
+
   if (postsError) return <ErrorWindow>{postsError}</ErrorWindow>;
   return (
     <>

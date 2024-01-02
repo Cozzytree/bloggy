@@ -15,6 +15,6 @@ export function useForeighUser() {
     queryKey: ["foreignUser"],
     refetchOnMount: true,
   });
+
   return { foreignUserData, loadingForeign, error };
-  //   export {}
 }

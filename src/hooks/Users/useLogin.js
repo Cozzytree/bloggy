@@ -1,7 +1,8 @@
 import { useState } from "react";
 import supabase from "../../supabase/supabase";
 import toast from "react-hot-toast";
-import { login as withPassword } from "../../supabase/supabaseAPI";
+// import { login as withPassword } from "../../supabase/supabaseAPI";
+import authService from "../../supabase/supabase.auth";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -40,7 +41,7 @@ export function useLogin() {
     isPending: isLogging,
     mutate: login,
   } = useMutation({
-    mutationFn: ({ email, password }) => withPassword({ email, password }),
+    mutationFn: ({ email, password }) => authService.login({ email, password }),
     onSuccess: (user) => {
       queryClent.setQueryData(["getCurrentUser"], user.user);
       navigate("/user", { replace: true });

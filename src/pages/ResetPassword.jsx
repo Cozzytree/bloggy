@@ -2,50 +2,56 @@ import Button from "../interface/Button";
 import { useChangePassword } from "../hooks/Users/useChangePassword";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import FormRow from "../interface/FormRow";
+import Logo from "../interface/Logo";
+import { FaKey } from "react-icons/fa6";
 
 const inputStyle =
-  "w-[15em] rounded-md px-3 py-[2px] text-zinc-900 outline-none focus:ring-[1px] ring-lime-500";
+  "w-[15em] sm:w-[18em] px-5 py-1 rounded-xl text-zinc-900 dark:text-zinc-100 bg-transparent text-sm tracking-wide outline-none focus:ring-[0.5px] ring-lime-900";
 
 function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { resetPassword, err } = useChangePassword();
+  const { isPending, updatePassword, error } = useChangePassword();
   const navigate = useNavigate();
 
   function handleChangePass(e) {
     e.preventDefault();
     if ((!password || !confirmPassword) && password !== confirmPassword) return;
 
-    resetPassword(password);
-    if (!err) navigate("/user");
+    updatePassword(password);
+    if (!error) navigate("/user");
   }
   return (
-    <div className="bg-zinc-800 text-zinc-100 remove-scroll-edge min-h-screen flex flex-col items-center">
+    <div className="dark:bg-zinc-800 bg-zinc-300 dark:text-zinc-100 remove-scroll-edge min-h-screen flex flex-col items-center">
+      <Logo />
       <form
-        className="text-zinc-100 font-NovaSquare flex flex-col mt-[5em] gap-4 w-[20em] items-center bg-zinc-700/70 py-4 px-5 rounded-md shadow-md shadow-zinc-600/60"
+        className="text-zinc-100 font-NovaSquare flex flex-col mt-[5em] gap-4 w-[20em] items-center dark:bg-zinc-700/70 bg-zinc-200 py-4 px-5 rounded-md shadow-md shadow-zinc-700/60"
         action=""
         onSubmit={handleChangePass}
       >
-        <div className="flex flex-col gap-1">
-          <label htmlFor="passwword">New Password</label>
+        <FormRow label="New Password" logo={<FaKey fill="green" />}>
           <input
-            value={password}
-            className={inputStyle}
             type="password"
+            placeholder="new password"
+            className={inputStyle}
             onChange={(e) => setPassword(e.target.value)}
           />
-        </div>
+        </FormRow>
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="passwword">Confirm Password</label>
+        <FormRow label="Confirm password" logo={<FaKey fill="green" />}>
           <input
             value={confirmPassword}
             className={inputStyle}
             type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="confirm password"
           />
-        </div>
-        <Button type="small">Confirm</Button>
+        </FormRow>
+
+        <Button type="small" disabled={isPending}>
+          Confirm
+        </Button>
       </form>
     </div>
   );

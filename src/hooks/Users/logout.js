@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { logOut } from "../../supabase/supabaseAPI";
+// import { logOut } from "../../supabase/supabaseAPI";
+import authService from "../../supabase/supabase.auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 export function useLogout() {
+  const logout = authService.logout;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const {
@@ -11,7 +13,7 @@ export function useLogout() {
     isPending: isLoggingOut,
     error,
   } = useMutation({
-    mutationFn: logOut,
+    mutationFn: logout,
     onSuccess: () => {
       navigate("/login");
       queryClient.clear();

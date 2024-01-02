@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { useRecover } from "../hooks/Users/useRecoverPassword";
 import Button from "./Button";
+import FormRow from "./FormRow";
+import { MdEmail } from "react-icons/md";
+import Logo from "./Logo";
+import MiniSpinner from "./MiniSpinner";
 
 function SendRecovery() {
-  const { recoverPassword } = useRecover();
+  const { recoverPassword, isPending } = useRecover();
   const [email, setEmail] = useState("");
 
   function handleRecover(e) {
@@ -11,24 +15,32 @@ function SendRecovery() {
     if (!email) return;
     recoverPassword(email);
   }
+
   return (
-    <div className="bg-zinc-800 text-zinc-100 remove-scroll-edge min-h-screen flex flex-col items-center">
+    <div className="dark:bg-zinc-800 bg-zinc-300 text-zinc-100 remove-scroll-edge min-h-screen flex flex-col items-center">
+      <Logo />
       <form
         onSubmit={handleRecover}
-        className="text-zinc-50 font-NovaSquare flex flex-col items-center mt-[5em] gap-[1em] bg-zinc-700/80 py-5 px-5 rounded-md shadow-md shadow-zinc-700 border-[1px] border-zinc-700 w-[25em]"
+        className="text-zinc-50 font-NovaSquare flex flex-col items-center mt-[5em] gap-[1em] dark:bg-zinc-800/50 bg-zinc-200 py-5 px-5 rounded-md shadow-md shadow-zinc-700/30"
       >
-        <label htmlFor="email">Email</label>
-        <input
-          className="px-5 py-[4px] outline-none rounded-md text-zinc-900 focus:ring-[2px] ring-lime-600"
-          type="email"
-          placeholder="youremail@email.com"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <h1 className="w-[100%] text-center py-3 text-lime-900 md:text-2xl text-xl tracking-tight font-black rounded-md dark:bg-lime-400">
+          Enter your Email
+        </h1>
+        <FormRow logo={<MdEmail fill="green" />}>
+          <input
+            className="px-5 py-[4px] outline-none w-[200px] rounded-md text-zinc-900 dark:text-zinc-100 focus:ring-[0.5px] ring-lime-500 bg-transparent"
+            type="email"
+            placeholder="youremail@email.com"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </FormRow>
+
         <Button
+          disabled={isPending}
           type="small"
           className="py-5 w-auto flex justify-center items-center px-5"
         >
-          change password
+          {isPending ? <MiniSpinner /> : "change password"}
         </Button>
       </form>
     </div>

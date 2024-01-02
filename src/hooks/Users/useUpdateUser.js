@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUser } from "../../supabase/supabaseAPI";
+import authService from "../../supabase/supabase.auth";
 import toast from "react-hot-toast";
 import { useCurrentUser } from "./useCurrentUser";
 
 export function useUpdateUser() {
+  const { updateUser } = authService;
   const currentUser = useCurrentUser();
   const queryClient = useQueryClient();
   const {

@@ -10,14 +10,6 @@ import Comment from "./interface/Comment";
 import ProtectedRoute from "./interface/ProtectedRoute";
 import Spinner from "./interface/Spinner";
 
-// import UserInformation from "./pages/UserInformation";
-// import User from "./pages/User";
-// import UsersPosts from "./pages/UsersPosts";
-// import ResetPassword from "./pages/ResetPassword";
-// import Search from "./pages/Search";
-// import ForeighUser from "./pages/ForeighUser";
-// import LoginRoute from "./pages/LoginRoute";
-
 const SignUpPage = lazy(() => import("./pages/SignUpPage"));
 const User = lazy(() => import("./pages/User"));
 const UsersPosts = lazy(() => import("./pages/UsersPosts"));

@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { likePost } from "../../supabase/supabaseAPI";
+// import { likePost } from "../../supabase/supabaseAPI";
+import services from "../../supabase/supabase.services";
 import toast from "react-hot-toast";
 
 export function useLikePost() {
   const queryClient = useQueryClient();
+  const { likePost } = services;
   const {
     mutate: addLike,
     error,

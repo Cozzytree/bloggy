@@ -1,20 +1,21 @@
 import toast from "react-hot-toast";
-import supabase from "../../supabase/supabase";
+import authService from "../../supabase/supabase.auth";
+import { useMutation } from "@tanstack/react-query";
 
 export function useRecover() {
-  async function recoverPassword(email) {
-    let { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:5173/reset_password",
-    });
-
-    if (error) {
-      console.log(error);
-      throw new Error(error.message);
-    }
-    if (!error) toast("check your email");
-
-    return data;
-  }
-
-  return { recoverPassword };
+  const { sendNewPassword } = authService;
+  const {
+    error,
+    mutate: recoverPassword,
+    isPending,
+  } = useMutation({
+    mutationFn: sendNewPassword,
+    onSuccess: () => {
+      toast.success("Ckech your email");
+    },
+    onError: () => {
+      toast.error(error.message);
+    },
+  });
+  return { recoverPassword, isPending };
 }

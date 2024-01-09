@@ -4,7 +4,7 @@ import services from "../../supabase/supabase.services";
 import toast from "react-hot-toast";
 
 export function useInsert() {
-  const insertPosts = services.insertPost;
+  const { insertPost } = services;
   const queryClient = useQueryClient();
 
   const {
@@ -12,7 +12,7 @@ export function useInsert() {
     isPending: isLoadingAddPosts,
     error,
   } = useMutation({
-    mutationFn: (post) => insertPosts(post),
+    mutationFn: (post) => insertPost(post),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       toast.success(`posted`);

@@ -1,13 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
+export const supabaseKey = import.meta.env.VITE_SUPABASEKEY;
+export const supabaseUrl = import.meta.env.VITE_SUPABASEURL;
+
 export const client = createClient(
   import.meta.env.VITE_SUPABASEURL,
   import.meta.env.VITE_SUPABASEKEY
 );
 
 class Supabase {
-  supabaseKey = import.meta.env.VITE_SUPABASEKEY;
-  supabaseUrl = import.meta.env.VITE_SUPABASEURL;
-
   async matchLikeandPost(post) {
     const postID = post?.map((ids) => ids.id);
 

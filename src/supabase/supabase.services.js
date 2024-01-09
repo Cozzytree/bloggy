@@ -1,6 +1,6 @@
 import { PAGE_SIZE } from "../utils/consts";
 import Supabase from "./supabase";
-import { client } from "./supabase";
+import { client, supabaseUrl } from "./supabase";
 
 class Services extends Supabase {
   constructor() {
@@ -60,8 +60,25 @@ class Services extends Supabase {
   }
 
   async deletePosts(id) {
-    const { error } = await client.from("posts").delete().eq("id", id);
+    const { data: imageArr } = await client
+      .from("posts")
+      .select("image")
+      .eq("id", id);
+
+    const { error } = await client
+      .from("posts")
+      .delete()
+      .select("image")
+      .eq("id", id);
+
     if (error) throw new Error(error.message);
+    if (imageArr[0]?.image.length < 1) return;
+
+    const { error: delError } = await client.storage
+      .from("userPhotos")
+      .remove(imageArr[0]?.image);
+
+    if (delError) throw new Error(delError.message);
   }
 
   async likePost(postId, userId) {
@@ -110,7 +127,7 @@ class Services extends Supabase {
       fileName.push(imageArray[i].name.replaceAll("-", "_"));
       imagePath.push(
         imageArray[i]
-          ? `${this.supabaseUrl}/storage/v1/object/public/userPhotos/${imageArray[i].name}`
+          ? `${supabaseUrl}/storage/v1/object/public/userPhotos/${imageArray[i].name}`
           : null
       );
     }

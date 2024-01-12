@@ -11,6 +11,7 @@ import { useLikePost } from "../hooks/Users/useLikePost";
 import { useUnlikePost } from "../hooks/Users/UseUnlikePost";
 import { useNavigate } from "react-router-dom";
 import PostOptions from "./PostOptions";
+import { formatTime } from "../utils/time";
 
 function Posts({ data, render }) {
   return (
@@ -30,49 +31,49 @@ export function PostsItem({ posts, type }) {
   const { removeLike, isUnliking } = useUnlikePost();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    function handleSwipe(e) {
-      const touchStartX = e.changedTouches[0].clientX;
-      let touchEndX;
-      const onTouchEnd = (event) => {
-        touchEndX = event.changedTouches[0].clientX;
-        determineSwipeDirection();
-        document.removeEventListener("touchend", onTouchEnd);
-      };
+  // useEffect(() => {
+  //   function handleSwipe(e) {
+  //     const touchStartX = e.changedTouches[0].clientX;
+  //     let touchEndX;
+  //     const onTouchEnd = (event) => {
+  //       touchEndX = event.changedTouches[0].clientX;
+  //       determineSwipeDirection();
+  //       document.removeEventListener("touchend", onTouchEnd);
+  //     };
 
-      const determineSwipeDirection = () => {
-        const deltaX = touchEndX - touchStartX;
-        if (deltaX > 0) {
-          // Swipe right
-          if (currentImage > 0) {
-            setCurrentImage((prevIndex) => prevIndex - 1);
-          }
-        } else if (deltaX < 0) {
-          // Swipe left
-          if (currentImage < posts?.image.length - 1) {
-            setCurrentImage((prevIndex) => prevIndex + 1);
-          }
-        }
-      };
+  //     const determineSwipeDirection = () => {
+  //       const deltaX = touchEndX - touchStartX;
+  //       if (deltaX > 0) {
+  //         // Swipe right
+  //         if (currentImage > 0) {
+  //           setCurrentImage((prevIndex) => prevIndex - 1);
+  //         }
+  //       } else if (deltaX < 0) {
+  //         // Swipe left
+  //         if (currentImage < posts?.image.length - 1) {
+  //           setCurrentImage((prevIndex) => prevIndex + 1);
+  //         }
+  //       }
+  //     };
 
-      document.addEventListener("touchend", onTouchEnd);
-    }
+  //     document.addEventListener("touchend", onTouchEnd);
+  //   }
 
-    posts?.image?.forEach(() => {
-      document
-        .querySelector(`.swipe-${posts.id}`)
-        .addEventListener("touchstart", handleSwipe);
-    });
+  //   posts?.image?.forEach(() => {
+  //     document
+  //       .querySelector(`.swipe-${posts.id}`)
+  //       .addEventListener("touchstart", handleSwipe);
+  //   });
 
-    return () => {
-      posts?.image?.forEach(() => {
-        const element = document.querySelector(`.swipe-${posts.id}`);
-        if (element) {
-          element.removeEventListener("touchstart", handleSwipe);
-        }
-      });
-    };
-  }, [currentImage, posts]);
+  //   return () => {
+  //     posts?.image?.forEach(() => {
+  //       const element = document.querySelector(`.swipe-${posts.id}`);
+  //       if (element) {
+  //         element.removeEventListener("touchstart", handleSwipe);
+  //       }
+  //     });
+  //   };
+  // }, [currentImage, posts]);
 
   function handleAddLike() {
     addLike({ postId: posts.id, userId: currentUser });
@@ -88,6 +89,7 @@ export function PostsItem({ posts, type }) {
   function handleNavigate(id) {
     navigate(`/comments/${id}`);
   }
+
   return (
     <li
       className={`${
@@ -100,10 +102,7 @@ export function PostsItem({ posts, type }) {
             {profiles?.full_name}
           </h1>
           <span className="text-[0.6em] text-zinc-400">
-            {Intl.DateTimeFormat("en", {
-              timeStyle: "medium",
-              dateStyle: "medium",
-            }).format(new Date(created_at))}
+            {formatTime(created_at)}
           </span>
         </div>
         {type === "ownAccount" && (
@@ -128,10 +127,13 @@ export function PostsItem({ posts, type }) {
               } float-left ${
                 isLoadedImage ? "backdrop-blur-0" : "backdrop-blur-xl"
               }`}
-              onLoad={() => handleLoadedImage()}
+              onLoad={() => {
+                handleLoadedImage();
+              }}
             />
+
             <div className="flex space-center slowAndSteady items-center h-5">
-              {posts.image.map((dot, i) => (
+              {posts?.image.map((dot, i) => (
                 <span key={i}>
                   {posts.image.length > 1 && (
                     <GoDotFill

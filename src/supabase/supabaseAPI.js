@@ -80,7 +80,7 @@ export async function getAllPosts({ pageParam = 0 }) {
 export async function foreignUser(user_id) {
   const { data: post, error } = await client
     .from("posts")
-    .select("*, profiles(username)")
+    .select("*, profiles(full_name)")
     .eq("user_id", user_id);
 
   const foreignUserDetails = await matchLikeandPost(post);

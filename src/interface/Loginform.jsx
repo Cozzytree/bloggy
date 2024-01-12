@@ -7,13 +7,14 @@ import { FaUnlock } from "react-icons/fa";
 import Spinner from "./Spinner";
 import toast from "react-hot-toast";
 import FormRow from "./FormRow";
+import { useLoginWithOtp } from "../hooks/Users/useLoginwithOtp";
 
 const inputStyle =
   "w-[15em] sm:w-[18em] px-5 py-1 rounded-xl text-zinc-900 dark:text-zinc-100 bg-transparent text-sm tracking-wide outline-none focus:ring-[0.5px] ring-lime-900";
 
 function Form() {
-  const { fetchLogin, loadingLogin, loginError, login, isLogging } = useLogin();
-
+  const { error, login, isLogging } = useLogin();
+  const { loginwithEmailLink, isPending } = useLoginWithOtp();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const naviagate = useNavigate();
@@ -25,8 +26,9 @@ function Form() {
       return;
     }
 
-    if (email && !password) fetchLogin(email);
-    if (email && password && !loginError) {
+    if (email && !password) loginwithEmailLink(email);
+
+    if (email && password && !error) {
       login({ email, password });
       setEmail("");
       setPassword("");
@@ -35,7 +37,7 @@ function Form() {
 
   return (
     <div className="flex flex-col justify-center gap-4 pb-5 text-md max-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] border-[1px] dark:bg-zinc-700/50 border-lime-900/40 rounded-md font-NovaSquare text-zinc-900 dark:text-zinc-50 items-center transition-all duration-150 relative slowAndSteady shadow-md shadow-lime-900/50">
-      {(loadingLogin || isLogging) && <Spinner />}
+      {(isPending || isLogging) && <Spinner />}
 
       <h1 className="w-[100%] text-center py-3 text-lime-900 md:text-3xl text-xl tracking-tight font-black rounded-md dark:bg-lime-400">
         Log In

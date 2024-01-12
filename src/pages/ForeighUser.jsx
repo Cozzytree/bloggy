@@ -23,7 +23,7 @@ function ForeighUser() {
 
   return (
     <>
-      <BackButton className="absolute left-4 top-4" />
+      <BackButton className="absolute left-4 top-4 text-xs md:text-sm" />
       {foreignUserData?.map((posts) => (
         <PostsItem posts={posts} key={posts.id} />
       ))}

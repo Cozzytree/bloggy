@@ -39,6 +39,21 @@ class AuthService extends Supabase {
     }
   }
 
+  async loginWithEmail(email) {
+    try {
+      const { data, error } = await client.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: "https://blogggyy.netlify.app/user",
+        },
+      });
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (error) {
+      throw error.message;
+    }
+  }
+
   async getCurrentUser() {
     const { data: session } = await client.auth.getSession();
     if (!session.session) return null;

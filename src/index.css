@@ -6,6 +6,18 @@
   background-color: rgb(0, 149, 224);
 }
 
+body::-webkit-scrollbar {
+  width: 8px;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(98, 255, 0);
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: rgb(0, 0, 0);
+}
+
 .text_shadow {
   text-shadow: 2px 1px 20px rgba(0, 255, 0, 0.598);
 }

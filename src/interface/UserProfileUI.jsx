@@ -4,7 +4,7 @@ const liStyle =
 function UserProfileUI({ isPosts, setIsPosts, username }) {
   return (
     <>
-      <div className="min-h-[10em] w-[100%] flex items-baseline mt-5 space-x-1 relative">
+      <div className="min-h-[10em] w-[60vw] flex items-baseline mt-5 gap-3 relative">
         {username?.avatar_url ? (
           <img
             src={username?.avatar_url}
@@ -16,7 +16,7 @@ function UserProfileUI({ isPosts, setIsPosts, username }) {
         )}
 
         <div className="flex gap-4 relative justify-between">
-          <h1 className="mb-5 text-zinc-50 text-sm md:text-md font-bold font-NovaSquare">
+          <h1 className="mb-5 text-zinc-50 text-sm md:text-xl font-bold font-NovaSquare">
             {username?.full_name}
           </h1>
         </div>

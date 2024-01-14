@@ -12,6 +12,7 @@ import { useUnlikePost } from "../hooks/Users/UseUnlikePost";
 import { useNavigate } from "react-router-dom";
 import PostOptions from "./PostOptions";
 import { formatTime } from "../utils/time";
+import Content from "./Content";
 
 function Posts({ data, render }) {
   return (
@@ -154,7 +155,9 @@ export function PostsItem({ posts, type }) {
       ) : null}
 
       {/* {Post content} */}
-      <p className="text-sm py-5 w-[60%]">{content}</p>
+      <div className="text-sm py-5 w-[60%]">
+        <Content>{content}</Content>
+      </div>
 
       <div className="w-[60%] md:w-[50%] flex justify-between border-b-[1px] border-b-zinc-100/20 p-2 items-start">
         <Likes

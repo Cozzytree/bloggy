@@ -36,7 +36,7 @@ function Form() {
   }
 
   return (
-    <div className="flex flex-col justify-center gap-4 pb-5 text-md max-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] border-[1px] dark:bg-zinc-700/50 border-lime-900/40 rounded-md font-NovaSquare text-zinc-900 dark:text-zinc-50 items-center transition-all duration-150 relative slowAndSteady shadow-md shadow-lime-900/50">
+    <div className="flex flex-col justify-center gap-4 pb-5 text-md max-h-[60vh] mt-[5em] w-[18em] sm:w-[20em] dark:bg-zinc-700/50 rounded-md font-NovaSquare text-zinc-900 dark:text-zinc-50 items-center transition-all duration-150 relative slowAndSteady shadow-md shadow-zinc-800/50">
       {(isPending || isLogging) && <Spinner />}
 
       <h1 className="w-[100%] text-center py-3 text-lime-900 md:text-3xl text-xl tracking-tight font-black rounded-md dark:bg-lime-400">

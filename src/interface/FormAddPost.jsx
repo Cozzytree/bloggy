@@ -3,7 +3,7 @@ import Button from "./Button";
 import { IoAddOutline } from "react-icons/io5";
 
 const inputStyle =
-  "bg-transparent w-[100%] px-4 py-2 outline-none text-zinc-50 font-NovaSquare text-md";
+  "bg-transparent min-w-[300px] px-4 py-2 outline-none text-zinc-50 font-NovaSquare text-sm md:text-md";
 
 function FormAddPost({ addPosts, isLoading }) {
   const [userPost, setUserPost] = useState("");
@@ -51,7 +51,7 @@ function FormAddPost({ addPosts, isLoading }) {
           onChange={(e) => setImageFile(e.target.files)}
           multiple
         />
-        <Button disabled={isLoading} type="small">
+        <Button disabled={isLoading} type="small" className="w-fit px-2">
           Add Post
         </Button>
       </form>

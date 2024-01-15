@@ -2,6 +2,8 @@
 import { GoDotFill } from "react-icons/go";
 import { useEffect, useState } from "react";
 import { BsAppIndicator } from "react-icons/bs";
+import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 // import Spinner from "./Spinner";
 
 import Likes from "./Likes";
@@ -32,49 +34,49 @@ export function PostsItem({ posts, type }) {
   const { removeLike, isUnliking } = useUnlikePost();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   function handleSwipe(e) {
-  //     const touchStartX = e.changedTouches[0].clientX;
-  //     let touchEndX;
-  //     const onTouchEnd = (event) => {
-  //       touchEndX = event.changedTouches[0].clientX;
-  //       determineSwipeDirection();
-  //       document.removeEventListener("touchend", onTouchEnd);
-  //     };
+  useEffect(() => {
+    function handleSwipe(e) {
+      const touchStartX = e.changedTouches[0].clientX;
+      let touchEndX;
+      const onTouchEnd = (event) => {
+        touchEndX = event.changedTouches[0].clientX;
+        determineSwipeDirection();
+        document.removeEventListener("touchend", onTouchEnd);
+      };
 
-  //     const determineSwipeDirection = () => {
-  //       const deltaX = touchEndX - touchStartX;
-  //       if (deltaX > 0) {
-  //         // Swipe right
-  //         if (currentImage > 0) {
-  //           setCurrentImage((prevIndex) => prevIndex - 1);
-  //         }
-  //       } else if (deltaX < 0) {
-  //         // Swipe left
-  //         if (currentImage < posts?.image.length - 1) {
-  //           setCurrentImage((prevIndex) => prevIndex + 1);
-  //         }
-  //       }
-  //     };
+      const determineSwipeDirection = () => {
+        const deltaX = touchEndX - touchStartX;
+        if (deltaX > 0) {
+          // Swipe right
+          if (currentImage > 0) {
+            setCurrentImage((prevIndex) => prevIndex - 1);
+          }
+        } else if (deltaX < 0) {
+          // Swipe left
+          if (currentImage < posts?.image.length - 1) {
+            setCurrentImage((prevIndex) => prevIndex + 1);
+          }
+        }
+      };
 
-  //     document.addEventListener("touchend", onTouchEnd);
-  //   }
+      document.addEventListener("touchend", onTouchEnd);
+    }
 
-  //   posts?.image?.forEach(() => {
-  //     document
-  //       .querySelector(`.swipe-${posts.id}`)
-  //       .addEventListener("touchstart", handleSwipe);
-  //   });
+    posts?.image?.forEach(() => {
+      document
+        .querySelector(`.swipe-${posts.id}`)
+        .addEventListener("touchstart", handleSwipe);
+    });
 
-  //   return () => {
-  //     posts?.image?.forEach(() => {
-  //       const element = document.querySelector(`.swipe-${posts.id}`);
-  //       if (element) {
-  //         element.removeEventListener("touchstart", handleSwipe);
-  //       }
-  //     });
-  //   };
-  // }, [currentImage, posts]);
+    return () => {
+      posts?.image?.forEach(() => {
+        const element = document.querySelector(`.swipe-${posts.id}`);
+        if (element) {
+          element.removeEventListener("touchstart", handleSwipe);
+        }
+      });
+    };
+  }, [currentImage, posts]);
 
   function handleAddLike() {
     addLike({ postId: posts.id, userId: currentUser });
@@ -83,12 +85,23 @@ export function PostsItem({ posts, type }) {
     removeLike({ id: posts.id, user_id: currentUser });
   }
 
-  function handleLoadedImage() {
-    setIsLoadedImage(true);
-  }
-
   function handleNavigate(id) {
     navigate(`/comments/${id}`);
+  }
+
+  function handleLeftArrow() {
+    if (currentImage === 0) {
+      setCurrentImage(posts?.image?.length - 1);
+    } else {
+      setCurrentImage((cur) => cur - 1);
+    }
+  }
+  function handleRightArrow() {
+    if (currentImage === posts?.image?.length - 1) {
+      setCurrentImage(0);
+    } else {
+      setCurrentImage((cur) => cur + 1);
+    }
   }
 
   return (
@@ -106,6 +119,7 @@ export function PostsItem({ posts, type }) {
             {formatTime(created_at)}
           </span>
         </div>
+
         {type === "ownAccount" && (
           <PostOptions
             deletePost={() => deletePost(posts.id)}
@@ -119,6 +133,7 @@ export function PostsItem({ posts, type }) {
       {posts?.image.length ? (
         <div className="relative w-[100%] h-auto flex justify-center flex-col items-center gap-3">
           <>
+            {!isLoadedImage && <div className="image-loader"></div>}
             <img
               src={posts?.image[currentImage]}
               key={Math.random() * 1000}
@@ -129,27 +144,49 @@ export function PostsItem({ posts, type }) {
                 isLoadedImage ? "backdrop-blur-0" : "backdrop-blur-xl"
               }`}
               onLoad={() => {
-                handleLoadedImage();
+                setIsLoadedImage(true);
               }}
             />
 
+            {/* { image dots for navigation} */}
             <div className="flex space-center slowAndSteady items-center h-5">
-              {posts?.image.map((dot, i) => (
+              {posts?.image.map((_, i) => (
                 <span key={i}>
                   {posts.image.length > 1 && (
-                    <GoDotFill
-                      fill="white"
-                      key={Math.random() * 1000}
-                      size={currentImage === i ? 12 : 10}
-                      onClick={() => setCurrentImage(i)}
-                      className={`${
-                        currentImage === i ? "opacity-100" : "opacity-50"
-                      } cursor-pointer`}
-                    />
+                    <>
+                      <GoDotFill
+                        fill="white"
+                        key={Math.random() * 1000}
+                        size={currentImage === i ? 12 : 10}
+                        onClick={() => setCurrentImage(i)}
+                        className={`${
+                          currentImage === i ? "opacity-100" : "opacity-50"
+                        } cursor-pointer`}
+                      />
+                    </>
                   )}
                 </span>
               ))}
             </div>
+
+            {/* {arrows for navigation } */}
+
+            {posts?.image?.length > 1 && (
+              <>
+                <FaArrowLeft
+                  onClick={handleLeftArrow}
+                  className="absolute left-3 bg-white w-6 h-6 rounded-[100%] p-[4px]"
+                  fill="black"
+                  cursor="pointer"
+                />
+                <FaArrowRight
+                  onClick={handleRightArrow}
+                  className="absolute right-3 bg-white w-6 h-6 rounded-[100%] p-[4px]"
+                  fill="black"
+                  cursor="pointer"
+                />
+              </>
+            )}
           </>
         </div>
       ) : null}

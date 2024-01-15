@@ -32,7 +32,6 @@ class AuthService extends Supabase {
         password,
       });
       if (error) return new Error(error.message);
-
       return data;
     } catch (error) {
       throw error.message;
